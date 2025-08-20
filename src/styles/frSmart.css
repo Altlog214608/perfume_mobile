@@ -1,0 +1,401 @@
+.element {
+  background-color: transparent;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.element .overlap-group-wrapper {
+  background-color: black;
+  background-size: 100% 100%;
+  width: 320px;
+  height: 620px;
+  position: relative;
+}
+
+.element .overlap-group {
+  position: relative;
+  height: 620px;
+  background-color: #132f5a;
+  background-size: 100% 100%;
+}
+
+.element .overlap {
+  position: absolute;
+  width: 320px;
+  height: 745px;
+  top: 0;
+  left: 0;
+  background-color: #3559A6;
+  background-size: 100% 100%;
+}
+
+.element .div {
+  position: absolute;
+  width: 303px;
+  height: 374px;
+  top: 14px;
+  left: 8px;
+}
+
+.element .overlap-2 {
+  position: absolute;
+  width: 303px;
+  height: 355px;
+  top: 20px;
+  left: 0;
+}
+
+.element .background-image {
+  position: absolute;
+  width: 237px;
+  height: 249px;
+  top: 101px;
+  left: 29px;
+}
+
+.element .sub-title {
+  position: absolute;
+  top: 23px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "NanumSquare-ExtraBold", Helvetica;
+  font-weight: 800;
+  color: #f5fbff;
+  font-size: 40px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.element .title {
+  position: absolute;
+  top: 0;
+  left: 75px;
+  font-family: "NanumSquare-Regular", Helvetica;
+  font-weight: 400;
+  color: #f5fbff;
+  font-size: 21px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.element .start-icon-small {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  top: 65px;
+  left: 5px;
+}
+
+.element .start-icon-large {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  top: 112px;
+  left: 0;
+}
+
+.element .image {
+  position: absolute;
+  width: 195px;
+  height: 195px;
+  top: 125px;
+  left: 55px;
+}
+
+.element .hash,
+.element .p {
+  position: absolute;
+  width: 68px;
+  font-family: "NanumSquare-Bold", Helvetica;
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+  text-align: center;
+}
+.element .hash {
+  top: 340px;
+  left: 235px;
+}
+.element .p {
+  top: 360px;
+  left: 235px;
+}
+
+.element .text-wrapper {
+  font-weight: 700;
+}
+
+.element .span {
+  font-family: "NanumSquare-Regular", Helvetica;
+}
+
+.element .share {
+  position: absolute;
+  width: 31px;
+  height: 31px;
+  top: 224px;
+  left: 65px;
+}
+
+.element .img {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  top: 0;
+  left: 277px;
+}
+
+/* 노트 그룹 컨테이너 */
+.notes-container {
+  display: flex;
+  justify-content: center;
+  gap: 5%;
+  position: absolute;
+  top: 490px;
+  left: 0;
+  right: 0;
+  padding: 0 5%;
+}
+
+/* 공통 노트 그룹 스타일 */
+.note-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  width: 30%;
+}
+
+/* 타이틀 공통 스타일 */
+.note-title {
+  font-family: "NanumSquare-Bold", Helvetica;
+  font-weight: 700;
+  color: #e3effa;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+/* 텍스트 공통 스타일 */
+.note-text {
+  font-family: "NanumSquare-Regular", Helvetica;
+  font-weight: 400;
+  color: #e3effa;
+  font-size: 19px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+
+/* ==== Dev toolbar (로컬 테스트용) ==== */
+.result-root .dev-toolbar {
+  position: relative;
+  width: 320px;
+  margin: 8px auto 10px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+.dev-button {
+  padding: 6px 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  border: 1px solid #89a7ff;
+}
+.dev-hint {
+  opacity: 0.8;
+}
+
+/* ==== 등장 애니메이션 ==== */
+.fade-in { opacity: 0; transition: opacity .35s ease; }
+.fade-in.in { opacity: 1; }
+
+.pop-in { transform: scale(.96); opacity: 0; transition: transform .35s ease, opacity .35s ease; }
+.pop-in.in { transform: scale(1); opacity: 1; }
+
+.slide-up { transform: translateY(14px); opacity: 0; transition: transform .35s ease, opacity .35s ease; }
+.slide-up.in { transform: translateY(0); opacity: 1; }
+
+/* ==== 파라미터 컨테이너 ==== */
+.params-container {
+  position: absolute;
+  left: 0; right: 0;
+  top: 445px;         /* 카드 하단 영역에 자연스럽게 배치 */
+  padding: 12px 10px 0;
+}
+
+.param-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.badge {
+  font-family: "NanumSquare-Bold", Helvetica;
+  font-size: 12px;
+  color: #0f1c2f;
+  background: rgba(255,255,255,.9);
+  border: 1px solid rgba(255,255,255,.6);
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+/* ==== 노트 바 ==== */
+.note-group { width: 30%; }
+.note-bar {
+  position: relative;
+  width: 100%;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+  overflow: hidden;
+}
+.note-fill {
+  height: 100%;
+  width: 0%;
+  background: rgba(255,255,255,.92);
+  transition: width .9s ease; /* 좌→우 채우기 */
+}
+.note-value {
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translate(100%, -50%);
+  font-size: 11px;
+  color: #e3effa;
+  white-space: nowrap;
+}
+
+/* ===== 상세 패널 (갈색 부분 위에 카드처럼) ===== */
+.details-panel {
+  position: absolute;
+  left: 0; right: 0;
+  top: 445px;                 /* 기존 갈색 경계선 위쪽 */
+  padding: 14px 16px 18px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  /* 카드 느낌 */
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(2px);
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* 라인(행) */
+.detail-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 라벨/값 */
+.detail-label {
+  font-family: "NanumSquare-Bold", Helvetica;
+  font-size: 13px;
+  color: #0f1c2f;
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(255,255,255,.65);
+  border-radius: 10px;
+  padding: 4px 8px;
+  text-align: center;
+}
+.detail-value {
+  font-family: "NanumSquare-Regular", Helvetica;
+  font-size: 14px;
+  color: #e9f1fb;
+}
+
+/* 노트 바 (우측 수치 표시 유지) */
+.note-bar {
+  position: relative;
+  width: 100%;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+  overflow: hidden;
+}
+.note-fill {
+  height: 100%;
+  width: 0%;
+  background: rgba(255,255,255,.92);
+  transition: width .9s ease;
+}
+.note-value {
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translate(100%, -50%);
+  font-size: 11px;
+  color: #e3effa;
+  white-space: nowrap;
+}
+
+/* 기존 배지/노트 컨테이너는 사용 안 함
+.params-container, .param-badges { display:none; }
+*/
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.fade-in.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==== 노트 바 (가운데 퍼센트 표시) ==== */
+.note-bar {
+  position: relative;
+  width: 100%;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+  overflow: hidden;
+}
+
+.note-fill {
+  position: absolute;
+  inset: 0;                /* top/right/bottom/left:0 */
+  height: 100%;
+  width: 0%;
+  background: rgba(255,255,255,.92);
+  z-index: 0;              /* 숫자 아래에 깔리도록 */
+  transition: width .9s ease;
+}
+
+/* 숫자를 바 "가운데"에 올리기 */
+.note-value {
+  position: absolute;
+  inset: 0;                /* 노트바 전체를 차지 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;              /* fill 위로 */
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .2px;
+  color: #0f1c2f;          /* 밝은 배경(채워진 부분)에서 잘 보이는 색 */
+  text-shadow: 0 1px 2px rgba(0,0,0,.35); /* 대비 강화 */
+  pointer-events: none;    /* 클릭 막지 않도록 */
+}
+
+/* (선택) 채움이 적을 때 어두운 배경 위에서 더 잘 보이도록 색 반전 */
+.note-value.onfill {
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0,0,0,.55);
+}
