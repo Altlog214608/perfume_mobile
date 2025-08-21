@@ -316,3 +316,42 @@ html, body {
 .note-fill {
   transition: width .9s cubic-bezier(.22,.61,.36,1);
 }
+
+
+/* 공유 메뉴 */
+.share-menu {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+  background: rgba(15, 28, 47, 0.92);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.25);
+  overflow: hidden;
+  min-width: 160px;
+  backdrop-filter: blur(2px);
+}
+.share-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  color: #fff;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.share-item + .share-item { border-top: 1px solid rgba(255,255,255,.12); }
+.share-item:active { background: rgba(255,255,255,.08); }
+
+/* 공유 아이콘(기존 .img)은 위치 고정 유지 */
+.element .img {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  top: 10px;
+  right: 10px;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.25));
+  z-index: 11; /* 메뉴보다 위에서 클릭 받아 토글 */
+}

@@ -11,13 +11,10 @@ import maruit from "../assets/img/maruit.png";
 import nectarua from "../assets/img/nectarua.png";
 import croloys from "../assets/img/croloys.png";
 
-// 상단 import 아래 유틸 추가
+// hex 색상 → rgba 변환
 const hexToRgba = (hex, alpha = 1) => {
-  // #RGB or #RRGGBB
   const c = hex.replace('#','');
-  const x = c.length === 3
-    ? c.split('').map(ch => ch+ch).join('')
-    : c;
+  const x = c.length === 3 ? c.split('').map(ch => ch+ch).join('') : c;
   const r = parseInt(x.slice(0,2),16);
   const g = parseInt(x.slice(2,4),16);
   const b = parseInt(x.slice(4,6),16);
@@ -54,9 +51,9 @@ export default function PerfumeResult() {
 
   const [showTitle, setShowTitle] = useState(false);
   const [showImage, setShowImage] = useState(false);
-
-  // ✅ 타입 제거 (순수 JS)
   const [visibleRows, setVisibleRows] = useState([]);
+  const [showShare, setShowShare] = useState(false);
+
   const rowOrder = ["gender", "age", "color", "style", "top", "middle", "base"];
 
   useEffect(() => {
@@ -77,12 +74,65 @@ export default function PerfumeResult() {
     return () => { clearTimeout(t0); clearTimeout(t1); };
   }, [perfume, params.top, params.middle, params.base]);
 
+  // 한국어 변환
   const korGender = KOR.gender[params.gender] ?? params.gender;
   const korAge    = KOR.age[params.age] ?? params.age;
   const korColor  = KOR.color[params.color] ?? params.color;
   const korStyle  = KOR.style[params.style] ?? params.style;
 
   const sampleUrl = useMemo(() => buildSampleUrl(), []);
+  const currentUrl = useMemo(() => window.location.href, []);
+  const shareText = `${item.subTitle} - ${item.title}\n#향수추천 #${item.subTitle}`;
+
+  // Kakao SDK 초기화
+  useEffect(() => {
+    const key = process.env.REACT_APP_KAKAO_JS_KEY;
+    if (window.Kakao && key && !window.Kakao.isInitialized()) {
+      window.Kakao.init(key);
+    }
+  }, []);
+
+  // 공유 함수들
+  const shareNative = async () => {
+    if (navigator.share) {
+      await navigator.share({ title: item.subTitle, text: shareText, url: currentUrl });
+    } else {
+      await navigator.clipboard.writeText(currentUrl);
+      alert("링크가 복사되었습니다.");
+    }
+    setShowShare(false);
+  };
+
+  const shareToX = () => {
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(currentUrl)}`;
+    window.open(url, "_blank");
+    setShowShare(false);
+  };
+
+  const shareToKakao = () => {
+    if (!window.Kakao || !window.Kakao.isInitialized()) {
+      alert("카카오 SDK가 초기화되지 않았습니다.");
+      return;
+    }
+    window.Kakao.Link.sendDefault({
+      objectType: "feed",
+      content: {
+        title: item.subTitle,
+        description: `${korStyle} · ${korColor} · ${korAge}`,
+        imageUrl: item.image, // ⚠️ public/ 절대경로 권장
+        link: { mobileWebUrl: currentUrl, webUrl: currentUrl },
+      },
+      buttons: [{ title: "자세히 보기", link: { mobileWebUrl: currentUrl, webUrl: currentUrl } }],
+    });
+    setShowShare(false);
+  };
+
+  const shareToInstagram = async () => {
+    if (navigator.share) return shareNative();
+    await navigator.clipboard.writeText(currentUrl);
+    alert("Instagram은 웹 공유가 제한되어 링크를 복사했습니다.");
+    setShowShare(false);
+  };
 
   const panelBg   = useMemo(() => hexToRgba(item.colors.overlapGroup, 0.78), [item]);
   const panelLine = useMemo(() => hexToRgba(item.colors.overlap,      0.22), [item]);
@@ -97,109 +147,67 @@ export default function PerfumeResult() {
             {/* 타이틀/이미지 */}
             <div className={`div appear ${showTitle ? "in" : ""}`}>
               <div className="overlap-2">
-                <div className="background-image" />
                 <div className="sub-title">{item.subTitle}</div>
                 <div className="title">{item.title}</div>
 
-                <img className="start-icon-small" src="https://c.animaapp.com/AUxvzaXH/img/start-icon-small.svg" alt="" />
-                <img className="start-icon-large" src="https://c.animaapp.com/AUxvzaXH/img/start-icon-large.svg" alt="" />
-                <img className="img" src="https://c.animaapp.com/AUxvzaXH/img/share.svg" alt="" />
+                {/* 공유 버튼 */}
+                <img
+                  className="img"
+                  src="https://c.animaapp.com/AUxvzaXH/img/share.svg"
+                  alt="공유하기"
+                  onClick={() => setShowShare(true)}
+                />
 
                 <img className={`image pop-in ${showImage ? "in" : ""}`} src={item.image} alt={item.subTitle} />
-
-                <p className="hash"><span className="text-wrapper">#</span><span className="span"> {item.hash}</span></p>
-                <p className="p"><span className="text-wrapper">#</span><span className="span"> {item.hash1}</span></p>
+                <p className="hash">#{item.hash}</p>
+                <p className="p">#{item.hash1}</p>
               </div>
             </div>
 
             {/* 상세 패널 */}
-            {/* ✅ 상세 패널: overlapGroup/overlap로 테마 적용 */}
-            <div
-              className="details-panel"
-              style={{
-                background: panelBg,              // 카드 바탕색과 같은 계열(투명도)
-                borderTopLeftRadius: 18,
-                borderTopRightRadius: 18,
-                border: `1px solid ${panelLine}`, // 같은 계열 라인
-                boxShadow: "0 -8px 24px rgba(0,0,0,.25)"
-              }}
-            >
-              <DetailRow
-                label="성별" value={korGender}
-                visible={visibleRows.includes("gender")}
-                chipBg={chipBg} chipText={chipText}
-              />
-              <DetailRow
-                label="나이" value={korAge}
-                visible={visibleRows.includes("age")}
-                chipBg={chipBg} chipText={chipText}
-              />
-              <DetailRow
-                label="선호하는 색상" value={korColor}
-                visible={visibleRows.includes("color")}
-                chipBg={chipBg} chipText={chipText}
-              />
-              <DetailRow
-                label="선호하는 스타일" value={korStyle}
-                visible={visibleRows.includes("style")}
-                chipBg={chipBg} chipText={chipText}
-              />
+            <div className="details-panel" style={{
+              background: panelBg, borderTopLeftRadius: 18, borderTopRightRadius: 18,
+              border: `1px solid ${panelLine}`, boxShadow: "0 -8px 24px rgba(0,0,0,.25)"
+            }}>
+              <DetailRow label="성별" value={korGender} visible={visibleRows.includes("gender")} chipBg={chipBg} chipText={chipText} />
+              <DetailRow label="나이" value={korAge} visible={visibleRows.includes("age")} chipBg={chipBg} chipText={chipText} />
+              <DetailRow label="선호하는 색상" value={korColor} visible={visibleRows.includes("color")} chipBg={chipBg} chipText={chipText} />
+              <DetailRow label="선호하는 스타일" value={korStyle} visible={visibleRows.includes("style")} chipBg={chipBg} chipText={chipText} />
 
-              {/* 노트바도 테마 색상으로 살짝 톤 맞춤 (fill=overlap, 트랙=overlapGroup) */}
-              <NoteRow
-                label="탑노트" targetValue={params.top}
-                visible={visibleRows.includes("top")} delayMs={720}
-                trackColor={hexToRgba(item.colors.overlapGroup, 0.22)}
-                fillColor={hexToRgba(item.colors.overlap, 0.92)}
-                textOnFillCutoff={55}
-              />
-              <NoteRow
-                label="미들노트" targetValue={params.middle}
-                visible={visibleRows.includes("middle")} delayMs={900}
-                trackColor={hexToRgba(item.colors.overlapGroup, 0.22)}
-                fillColor={hexToRgba(item.colors.overlap, 0.92)}
-                textOnFillCutoff={55}
-              />
-              <NoteRow
-                label="베이스노트" targetValue={params.base}
-                visible={visibleRows.includes("base")} delayMs={1080}
-                trackColor={hexToRgba(item.colors.overlapGroup, 0.22)}
-                fillColor={hexToRgba(item.colors.overlap, 0.92)}
-                textOnFillCutoff={55}
-              />
+              <NoteRow label="탑노트" targetValue={params.top} visible={visibleRows.includes("top")} />
+              <NoteRow label="미들노트" targetValue={params.middle} visible={visibleRows.includes("middle")} />
+              <NoteRow label="베이스노트" targetValue={params.base} visible={visibleRows.includes("base")} />
             </div>
           </div>
         </div>
       </div>
+
+      {/* 공유 모달 */}
+      {showShare && (
+        <div className="share-modal">
+          <button onClick={shareNative}>기기 기본 공유</button>
+          <button onClick={shareToX}>X(트위터)</button>
+          <button onClick={shareToInstagram}>Instagram</button>
+          <button onClick={shareToKakao}>카카오톡</button>
+          <button onClick={() => setShowShare(false)}>닫기</button>
+        </div>
+      )}
 
       <a className="floating-cta" href={sampleUrl}>예시 값으로 채우기(이동)</a>
     </div>
   );
 }
 
-function DetailRow({ label, value, visible, delayMs = 0, chipBg = "rgba(255,255,255,.96)", chipText = "#0f1c2f" }) {
+function DetailRow({ label, value, visible, delayMs = 0, chipBg, chipText }) {
   return (
-    <div
-      className={`detail-row appear ${visible ? "in" : ""}`}
-      style={{ transitionDelay: visible ? `${delayMs}ms` : "0ms" }}
-    >
-      <div
-        className="detail-label"
-        style={{ background: chipBg, color: chipText, borderColor: "rgba(255,255,255,.75)" }}
-      >
-        {label}
-      </div>
+    <div className={`detail-row appear ${visible ? "in" : ""}`} style={{ transitionDelay: visible ? `${delayMs}ms` : "0ms" }}>
+      <div className="detail-label" style={{ background: chipBg, color: chipText }}>{label}</div>
       <div className="detail-value">{value}</div>
     </div>
   );
 }
 
-function NoteRow({
-  label, targetValue, visible, delayMs = 0,
-  trackColor = "rgba(255,255,255,.18)",
-  fillColor = "rgba(255,255,255,.92)",
-  textOnFillCutoff = 55
-}) {
+function NoteRow({ label, targetValue, visible, delayMs = 0 }) {
   const [width, setWidth] = useState(0);
   const [num, setNum] = useState(0);
   const fillRef = React.useRef(null);
@@ -210,7 +218,7 @@ function NoteRow({
     if (!visible) return;
     setWidth(0);
     const el = fillRef.current;
-    if (el) void el.offsetWidth;       // reflow 강제
+    if (el) void el.offsetWidth; // reflow
     const id1 = requestAnimationFrame(() => {
       requestAnimationFrame(() => setWidth(targetValue));
     });
@@ -228,22 +236,13 @@ function NoteRow({
     return () => { cancelAnimationFrame(id1); cancelAnimationFrame(rafId); };
   }, [visible, targetValue]);
 
-  const onfill = width >= textOnFillCutoff;
-
   return (
-    <div
-      className={`detail-row appear ${visible ? "in" : ""}`}
-      style={{ transitionDelay: visible ? `${delayMs}ms` : "0ms" }}
-    >
+    <div className={`detail-row appear ${visible ? "in" : ""}`} style={{ transitionDelay: visible ? `${delayMs}ms` : "0ms" }}>
       <div className="detail-label">{label}</div>
       <div className="detail-value">
-        <div className="note-bar" style={{ background: trackColor }}>
-          <div
-            ref={fillRef}
-            className="note-fill"
-            style={{ width: `${width}%`, background: fillColor }}
-          />
-          <div className={`note-value ${onfill ? "onfill" : ""}`}>{num}%</div>
+        <div className="note-bar">
+          <div ref={fillRef} className="note-fill" style={{ width: `${width}%` }} />
+          <div className="note-value">{num}%</div>
         </div>
       </div>
     </div>
