@@ -43,6 +43,38 @@ export default function PerfumeResult() {
     []
   );
 
+  // ...기존 state들...
+  const cardRef = React.useRef(null);
+
+  // 전체 카드(향수~파라미터 끝) 이미지 저장
+  const downloadCurrentImage = async () => {
+    try {
+      const root = cardRef.current;                 // 캡처할 대상
+      if (!root || !window.html2canvas) {
+        alert("화면 캡처 라이브러리가 아직 로드되지 않았어요. 잠시 후 다시 시도해주세요.");
+        return;
+      }
+      // 스케일 2배로 선명하게, CORS 허용
+      const canvas = await window.html2canvas(root, {
+        backgroundColor: null,
+        scale: window.devicePixelRatio > 1 ? 2 : 2,
+        useCORS: true,
+      });
+      const dataUrl = canvas.toDataURL("image/png");
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = `${item.subTitle}.png`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch (e) {
+      console.error(e);
+      alert("이미지 저장 중 문제가 발생했습니다.");
+    }
+    // 바텀시트 열려 있었다면 닫기
+    if (typeof closeShare === "function") closeShare();
+  };
+
   const { perfume, params } = useMemo(
     () => parseQuery(window.location.search, data.length),
     [data.length]
@@ -139,14 +171,21 @@ export default function PerfumeResult() {
 
 
 
-  const panelBg = useMemo(() => hexToRgba(item.colors.overlapGroup, 0.78), [item]);
-  const panelLine = useMemo(() => hexToRgba(item.colors.overlap, 0.22), [item]);
+  // 기존
+  // const panelBg   = useMemo(() => hexToRgba(item.colors.overlapGroup, 0.78), [item]);
+  // const panelLine = useMemo(() => hexToRgba(item.colors.overlap,      0.22), [item]);
+
+  // 불투명 카드 + 적당한 라인
+  const panelBg = useMemo(() => item.colors.overlapGroup, [item]);
+  const panelLine = useMemo(() => hexToRgba(item.colors.overlap, 0.35), [item]);
+
+
   const chipBg = useMemo(() => hexToRgba("#ffffff", 0.96), []);
   const chipText = "#0f1c2f";
 
   return (
     <div className="element result-root">
-      <div className="overlap-group-wrapper">
+      <div className="overlap-group-wrapper" ref={cardRef}>
         <div className="overlap-group" style={{ backgroundColor: item.colors.overlapGroup }}>
           <div className="overlap" style={{ backgroundColor: item.colors.overlap }}>
             {/* 타이틀/이미지 */}
@@ -168,6 +207,7 @@ export default function PerfumeResult() {
                     }
                   }}
                 />
+                <button className="download-btn" onClick={downloadCurrentImage}>⬇︎ 저장</button>
 
                 <img className={`image pop-in ${showImage ? "in" : ""}`} src={item.image} alt={item.subTitle} />
                 <p className="hash">#{item.hash}</p>
@@ -175,20 +215,32 @@ export default function PerfumeResult() {
               </div>
             </div>
 
-            {/* 상세 패널 */}
-            <div className="details-panel" style={{
-              background: panelBg, borderTopLeftRadius: 18, borderTopRightRadius: 18,
-              border: `1px solid ${panelLine}`, boxShadow: "0 -8px 24px rgba(0,0,0,.25)"
-            }}>
+            {/* 🔁 파라미터 카드: 1겹만 남기기 */}
+            <div
+              className="details-card"
+              style={{
+                background: panelBg,                      // item.colors.overlapGroup (불투명)
+                border: `1px solid ${panelLine}`,         // item.colors.overlap (살짝 진한 라인)
+                borderRadius: 18,
+                boxShadow: "0 6px 14px rgba(0,0,0,.14)",
+                padding: "16px",
+                width: "calc(100% - 32px)",
+                margin: "12px auto 24px"
+              }}
+            >
               <DetailRow label="성별" value={korGender} visible={visibleRows.includes("gender")} chipBg={chipBg} chipText={chipText} />
               <DetailRow label="나이" value={korAge} visible={visibleRows.includes("age")} chipBg={chipBg} chipText={chipText} />
               <DetailRow label="선호하는 색상" value={korColor} visible={visibleRows.includes("color")} chipBg={chipBg} chipText={chipText} />
               <DetailRow label="선호하는 스타일" value={korStyle} visible={visibleRows.includes("style")} chipBg={chipBg} chipText={chipText} />
 
-              <NoteRow label="탑노트" targetValue={params.top} visible={visibleRows.includes("top")} />
-              <NoteRow label="미들노트" targetValue={params.middle} visible={visibleRows.includes("middle")} />
-              <NoteRow label="베이스노트" targetValue={params.base} visible={visibleRows.includes("base")} />
+              <NoteRow label="탑노트" targetValue={params.top} visible={visibleRows.includes("top")} trackColor={hexToRgba(item.colors.overlapGroup, 0.25)}
+                fillColor={hexToRgba(item.colors.overlap, 0.9)} />
+              <NoteRow label="미들노트" targetValue={params.middle} visible={visibleRows.includes("middle")} trackColor={hexToRgba(item.colors.overlapGroup, 0.25)}
+                fillColor={hexToRgba(item.colors.overlap, 0.9)} />
+              <NoteRow label="베이스노트" targetValue={params.base} visible={visibleRows.includes("base")} trackColor={hexToRgba(item.colors.overlapGroup, 0.25)}
+                fillColor={hexToRgba(item.colors.overlap, 0.9)} />
             </div>
+
           </div>
         </div>
       </div>
@@ -236,7 +288,7 @@ function DetailRow({ label, value, visible, delayMs = 0, chipBg, chipText }) {
   );
 }
 
-function NoteRow({ label, targetValue, visible, delayMs = 0 }) {
+function NoteRow({ label, targetValue, visible, delayMs = 0 , trackColor, fillColor}) {
   const [width, setWidth] = useState(0);
   const [num, setNum] = useState(0);
   const fillRef = React.useRef(null);
@@ -269,8 +321,8 @@ function NoteRow({ label, targetValue, visible, delayMs = 0 }) {
     <div className={`detail-row appear ${visible ? "in" : ""}`} style={{ transitionDelay: visible ? `${delayMs}ms` : "0ms" }}>
       <div className="detail-label">{label}</div>
       <div className="detail-value">
-        <div className="note-bar">
-          <div ref={fillRef} className="note-fill" style={{ width: `${width}%` }} />
+        <div className="note-bar" style={{ background: trackColor }}>
+          <div ref={fillRef} className="note-fill" style={{ width: `${width}%`, background: fillColor }} />
           <div className="note-value">{num}%</div>
         </div>
       </div>

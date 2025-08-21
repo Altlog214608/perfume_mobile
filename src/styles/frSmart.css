@@ -427,3 +427,157 @@ html, body {
   background:#f7f8fb; font-weight:700; color:#223;
 }
 .share-cancel { background:#fff; }
+
+
+/* 카드 높이를 내용만큼 자동으로 */
+.element .overlap-group-wrapper {
+  height: auto !important;          /* 기존 620px/100vh 고정 해제 */
+}
+
+/* 상세 패널: 스크롤/최대높이 제거 → 내용만큼 늘어남 */
+.details-panel {
+  position: static !important;      /* 모바일에서 absolute로 고정했던 것 해제 */
+  max-height: none !important;
+  overflow: visible !important;
+  margin-top: 12px;
+  padding-bottom: 14px;
+}
+
+/* (선택) 페이지 전체 스크롤은 유지하되, 내부 스크롤바는 숨김 */
+.details-panel::-webkit-scrollbar { display: none; }
+
+/* 공유 아이콘 아래 ‘다운로드’ 버튼 */
+.download-btn {
+  position: absolute;
+  top: 40px;              /* 공유 아이콘(우상단) 바로 아래 배치 */
+  right: 8px;
+  z-index: 11;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.08);
+  background: rgba(255,255,255,.9);
+  color: #0f1c2f;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+}
+
+/* 모바일에서 카드가 화면보다 길어질 수 있으니 CTA 여백만 남김 */
+@media (max-width: 767px) {
+  .element .overlap-group-wrapper { width: 100vw; max-width: 480px; }
+  .floating-cta { position: fixed; } /* 그대로 고정 */
+}
+
+
+/* 어두운 카드 배경: 내용만큼만 높이 */
+.details-outer {
+  width: calc(100% - 16px);
+  margin: 12px auto 0;
+  padding: 12px 16px 14px;
+  /* 배경/테두리/둥근 모서리는 JSX 인라인 스타일에서 넣고,
+     여기서는 레이아웃만 담당 */
+}
+
+/* 실제 파라미터 그리드: 스크롤/최대높이/절대배치 모두 제거 */
+.details-panel {
+  position: static !important;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  height: auto !important;
+  max-height: none !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  align-self: start;
+}
+
+/* (기존 개발 단계에서 남아있을 수 있는 규칙을 무력화) */
+@media (max-width: 767px) {
+  .details-panel {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    max-height: none !important;
+  }
+}
+
+/* 내부 스크롤바 숨김 (혹시 브라우저가 생성해도) */
+.details-panel::-webkit-scrollbar { display: none; }
+
+/* 카드 컨테이너: 내용만큼만 늘어남 */
+.details-outer {
+  width: calc(100% - 32px);   /* 좌우 여백 */
+  margin: 12px auto 24px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  /* 배경/테두리/그림자는 JSX 인라인에서 지정 */
+  overflow: hidden;           /* 내부 라운드 경계 깔끔히 */
+}
+
+/* 실제 파라미터 그리드: 배경 없음! (2겹 방지) */
+.details-panel {
+  position: static !important;
+  background: transparent !important;     /* ✅ 반투명 배경 제거 */
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* 예전에 남아있을 수 있는 규칙 확실히 꺼주기 */
+.details-panel::-webkit-scrollbar { display: none !important; }
+
+/* 모바일 레이아웃 유지 */
+@media (max-width: 767px) {
+  .element .overlap-group-wrapper { width: 100vw; max-width: 480px; height: auto; }
+}
+
+/* ① 배경 레이어가 전체 화면을 덮지 않게: 콘텐츠 높이만큼만 */
+.element .overlap {
+  position: relative;     /* 기존 absolute 제거 */
+  width: 100%;
+  height: auto;           /* ✅ 콘텐츠 높이에 맞춰짐 */
+  left: 0;
+  top: 0;
+}
+
+/* ② 카드 한 겹만 사용 (.details-card) — 내부는 배경 없음 */
+.details-card {
+  /* 카드 배경/테두리/그림자는 JSX 인라인에서 지정 */
+}
+
+/* 혹시 남아있는 내부 패널 배경/그림자/스크롤 제로화 (과거 규칙 무력화) */
+.details-panel,
+.details-outer {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 파라미터 그리드 자체는 기존 그대로 유지 */
+.detail-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 내부 스크롤 방지 (과거 규칙 잔재 제거) */
+.details-panel {
+  position: static !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+.details-panel::-webkit-scrollbar { display: none !important; }
+
+/* 배경이 더 내려와 보이는 원인을 줄이기 위해 래퍼 높이도 자동 */
+.element .overlap-group-wrapper {
+  height: auto !important;
+}
