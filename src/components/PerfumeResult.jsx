@@ -89,52 +89,44 @@ export default function PerfumeResult() {
     const sampleUrl = useMemo(() => buildSampleUrl(), []);
 
     return (
-        <div className="element result-root">
-            {/* 좌측 테스트 링크는 그대로 */}
-            <div className="dev-toolbar">
-                <a className="dev-button" href={sampleUrl}>예시값으로 채우기(이동)</a>
-                <span className="dev-hint">/?perfume=7&gender=female&age=30s&color=blue&style=fresh&top=30&middle=40&base=30</span>
+    <div className="element result-root">
+      {/* ✅ 상단 dev-toolbar 삭제 */}
+      <div className="overlap-group-wrapper">
+        <div className="overlap-group" style={{ backgroundColor: item.colors.overlapGroup }}>
+          <div className="overlap" style={{ backgroundColor: item.colors.overlap }}>
+            {/* 제목/이미지 영역 그대로 */}
+            <div className={`div fade-in ${showTitle ? "in" : ""}`}>
+              <div className="overlap-2">
+                <div className="background-image" />
+                <div className="sub-title">{item.subTitle}</div>
+                <div className="title">{item.title}</div>
+                <img className="start-icon-small" src="https://c.animaapp.com/AUxvzaXH/img/start-icon-small.svg" alt="" />
+                <img className="start-icon-large" src="https://c.animaapp.com/AUxvzaXH/img/start-icon-large.svg" alt="" />
+                <img className={`image pop-in ${showImage ? "in" : ""}`} src={item.image} alt={item.subTitle} />
+                <p className="hash"><span className="text-wrapper">#</span><span className="span"> {item.hash}</span></p>
+                <p className="p"><span className="text-wrapper">#</span><span className="span"> {item.hash1}</span></p>
+              </div>
+              <img className="img" src="https://c.animaapp.com/AUxvzaXH/img/share.svg" alt="" />
             </div>
 
-            <div className="overlap-group-wrapper">
-                <div className="overlap-group" style={{ backgroundColor: item.colors.overlapGroup }}>
-                    <div className="overlap" style={{ backgroundColor: item.colors.overlap }}>
-                        {/* 1) 제목 */}
-                        <div className={`div fade-in ${showTitle ? "in" : ""}`}>
-                            <div className="overlap-2">
-                                <div className="background-image" />
-                                <div className="sub-title">{item.subTitle}</div>
-                                <div className="title">{item.title}</div>
-
-                                <img className="start-icon-small" src="https://c.animaapp.com/AUxvzaXH/img/start-icon-small.svg" alt="" />
-                                <img className="start-icon-large" src="https://c.animaapp.com/AUxvzaXH/img/start-icon-large.svg" alt="" />
-
-                                {/* 2) 이미지 */}
-                                <img className={`image pop-in ${showImage ? "in" : ""}`} src={item.image} alt={item.subTitle} />
-
-                                {/* 해시(작은 보조 텍스트) */}
-                                <p className="hash"><span className="text-wrapper">#</span><span className="span"> {item.hash}</span></p>
-                                <p className="p"><span className="text-wrapper">#</span><span className="span"> {item.hash1}</span></p>
-                            </div>
-                            <img className="img" src="https://c.animaapp.com/AUxvzaXH/img/share.svg" alt="" />
-                        </div>
-                    </div>
-
-                    {/* 3) 상세 패널 (갈색 영역 위) */}
-                    <div className="details-panel">
-                        <DetailRow label="성별" value={korGender} visible={visibleRows.includes("gender")} />
-                        <DetailRow label="나이" value={korAge} visible={visibleRows.includes("age")} />
-                        <DetailRow label="선호하는 색상" value={korColor} visible={visibleRows.includes("color")} />
-                        <DetailRow label="선호하는 스타일" value={korStyle} visible={visibleRows.includes("style")} />
-                        <NoteRow label="탑노트" value={bars.top} visible={visibleRows.includes("top")} />
-                        <NoteRow label="미들노트" value={bars.middle} visible={visibleRows.includes("middle")} />
-                        <NoteRow label="베이스노트" value={bars.base} visible={visibleRows.includes("base")} />
-                    </div>
-                </div>
+            {/* 상세 패널 */}
+            <div className="details-panel">
+              <DetailRow label="성별" value={korGender} visible={visibleRows.includes("gender")} />
+              <DetailRow label="나이" value={korAge} visible={visibleRows.includes("age")} />
+              <DetailRow label="선호하는 색상" value={korColor} visible={visibleRows.includes("color")} />
+              <DetailRow label="선호하는 스타일" value={korStyle} visible={visibleRows.includes("style")} />
+              <NoteRow label="탑노트" value={bars.top} visible={visibleRows.includes("top")} />
+              <NoteRow label="미들노트" value={bars.middle} visible={visibleRows.includes("middle")} />
+              <NoteRow label="베이스노트" value={bars.base} visible={visibleRows.includes("base")} />
             </div>
+          </div>
         </div>
-    );
-}
+      </div>
+
+      {/* ✅ 하단 고정: 예시값으로 채우기 */}
+      <a className="floating-cta" href={sampleUrl}>예시 값으로 채우기(이동)</a>
+    </div>
+  );
 
 function DetailRow({ label, value, visible }) {
     return (
@@ -160,4 +152,5 @@ function NoteRow({ label, value, visible }) {
             </div>
         </div>
     );
+}
 }

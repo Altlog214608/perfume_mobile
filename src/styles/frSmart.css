@@ -1,353 +1,133 @@
-.element {
-  background-color: transparent;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
+/* === 기본 설정 === */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: "NanumSquare-Regular", Helvetica, Arial, sans-serif;
 }
 
+.result-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: #fff;
+}
+
+/* === 공통 레이아웃 === */
 .element .overlap-group-wrapper {
-  background-color: black;
-  background-size: 100% 100%;
-  width: 320px;
-  height: 620px;
   position: relative;
+  margin: 0 auto;
+  background-color: #000;
+  width: 320px;   /* 기본 데스크탑 카드 크기 */
+  height: 620px;
 }
 
 .element .overlap-group {
-  position: relative;
-  height: 620px;
-  background-color: #132f5a;
-  background-size: 100% 100%;
+  height: 100%;
 }
 
 .element .overlap {
   position: absolute;
-  width: 320px;
-  height: 745px;
-  top: 0;
-  left: 0;
-  background-color: #3559A6;
-  background-size: 100% 100%;
+  width: 100%;
+  height: 100%;
+  left: 0; top: 0;
+  background-size: cover;
 }
 
+/* 제목 / 이미지 */
 .element .div {
-  position: absolute;
-  width: 303px;
-  height: 374px;
-  top: 14px;
+  width: calc(100% - 16px);
   left: 8px;
-}
-
-.element .overlap-2 {
-  position: absolute;
-  width: 303px;
-  height: 355px;
-  top: 20px;
-  left: 0;
-}
-
-.element .background-image {
-  position: absolute;
-  width: 237px;
-  height: 249px;
-  top: 101px;
-  left: 29px;
+  position: relative;
 }
 
 .element .sub-title {
-  position: absolute;
-  top: 23px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: "NanumSquare-ExtraBold", Helvetica;
-  font-weight: 800;
-  color: #f5fbff;
-  font-size: 40px;
-  letter-spacing: 0;
-  line-height: normal;
-  white-space: nowrap;
-  text-align: center;
+  font-size: 36px;
+  font-weight: 700;
 }
 
 .element .title {
-  position: absolute;
-  top: 0;
-  left: 75px;
-  font-family: "NanumSquare-Regular", Helvetica;
-  font-weight: 400;
-  color: #f5fbff;
-  font-size: 21px;
-  letter-spacing: 0;
-  line-height: normal;
-  white-space: nowrap;
-}
-
-.element .start-icon-small {
-  position: absolute;
-  width: 48px;
-  height: 48px;
-  top: 65px;
-  left: 5px;
-}
-
-.element .start-icon-large {
-  position: absolute;
-  width: 28px;
-  height: 28px;
-  top: 112px;
-  left: 0;
+  font-size: 18px;
+  margin-top: 4px;
 }
 
 .element .image {
-  position: absolute;
-  width: 195px;
-  height: 195px;
-  top: 125px;
-  left: 55px;
+  display: block;
+  margin: 12px auto;
+  max-width: 200px;
 }
 
-.element .hash,
-.element .p {
-  position: absolute;
-  width: 68px;
-  font-family: "NanumSquare-Bold", Helvetica;
-  font-weight: 400;
-  color: #ffffff;
-  font-size: 14px;
-  letter-spacing: 0;
-  line-height: normal;
-  white-space: nowrap;
-  text-align: center;
-}
-.element .hash {
-  top: 340px;
-  left: 235px;
-}
-.element .p {
-  top: 360px;
-  left: 235px;
-}
-
-.element .text-wrapper {
-  font-weight: 700;
-}
-
-.element .span {
-  font-family: "NanumSquare-Regular", Helvetica;
-}
-
-.element .share {
-  position: absolute;
-  width: 31px;
-  height: 31px;
-  top: 224px;
-  left: 65px;
-}
-
-.element .img {
-  position: absolute;
-  width: 26px;
-  height: 26px;
-  top: 0;
-  left: 277px;
-}
-
-/* 노트 그룹 컨테이너 */
-.notes-container {
-  display: flex;
-  justify-content: center;
-  gap: 5%;
-  position: absolute;
-  top: 490px;
-  left: 0;
-  right: 0;
-  padding: 0 5%;
-}
-
-/* 공통 노트 그룹 스타일 */
-.note-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 10px;
-  width: 30%;
-}
-
-/* 타이틀 공통 스타일 */
-.note-title {
-  font-family: "NanumSquare-Bold", Helvetica;
-  font-weight: 700;
-  color: #e3effa;
-  font-size: 14px;
-  letter-spacing: 0;
-  line-height: normal;
-}
-
-/* 텍스트 공통 스타일 */
-.note-text {
-  font-family: "NanumSquare-Regular", Helvetica;
-  font-weight: 400;
-  color: #e3effa;
-  font-size: 19px;
-  letter-spacing: 0;
-  line-height: normal;
-}
-
-
-/* ==== Dev toolbar (로컬 테스트용) ==== */
-.result-root .dev-toolbar {
-  position: relative;
-  width: 320px;
-  margin: 8px auto 10px;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 12px;
-}
-.dev-button {
-  padding: 6px 10px;
-  border-radius: 10px;
-  text-decoration: none;
-  border: 1px solid #89a7ff;
-}
-.dev-hint {
-  opacity: 0.8;
-}
-
-/* ==== 등장 애니메이션 ==== */
-.fade-in { opacity: 0; transition: opacity .35s ease; }
-.fade-in.in { opacity: 1; }
-
-.pop-in { transform: scale(.96); opacity: 0; transition: transform .35s ease, opacity .35s ease; }
-.pop-in.in { transform: scale(1); opacity: 1; }
-
-.slide-up { transform: translateY(14px); opacity: 0; transition: transform .35s ease, opacity .35s ease; }
-.slide-up.in { transform: translateY(0); opacity: 1; }
-
-/* ==== 파라미터 컨테이너 ==== */
-.params-container {
-  position: absolute;
-  left: 0; right: 0;
-  top: 445px;         /* 카드 하단 영역에 자연스럽게 배치 */
-  padding: 12px 10px 0;
-}
-
-.param-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  justify-content: center;
-  margin-bottom: 8px;
-}
-.badge {
-  font-family: "NanumSquare-Bold", Helvetica;
-  font-size: 12px;
-  color: #0f1c2f;
-  background: rgba(255,255,255,.9);
-  border: 1px solid rgba(255,255,255,.6);
-  padding: 4px 8px;
-  border-radius: 999px;
-}
-
-/* ==== 노트 바 ==== */
-.note-group { width: 30%; }
-.note-bar {
-  position: relative;
-  width: 100%;
-  height: 12px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.18);
-  overflow: hidden;
-}
-.note-fill {
-  height: 100%;
-  width: 0%;
-  background: rgba(255,255,255,.92);
-  transition: width .9s ease; /* 좌→우 채우기 */
-}
-.note-value {
-  position: absolute;
-  right: -6px;
-  top: 50%;
-  transform: translate(100%, -50%);
-  font-size: 11px;
-  color: #e3effa;
-  white-space: nowrap;
-}
-
-/* ===== 상세 패널 (갈색 부분 위에 카드처럼) ===== */
+/* 상세 패널 (공통) */
 .details-panel {
-  position: absolute;
-  left: 0; right: 0;
-  top: 445px;                 /* 기존 갈색 경계선 위쪽 */
-  padding: 14px 16px 18px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(2px);
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  padding: 12px 16px 14px;
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
-  /* 카드 느낌 */
-  background: rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(2px);
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  overflow-y: auto;
+  max-height: 240px;
 }
 
-/* 라인(행) */
+/* 각 행 */
 .detail-row {
   display: grid;
   grid-template-columns: 110px 1fr;
   align-items: center;
   gap: 10px;
 }
-
-/* 라벨/값 */
 .detail-label {
   font-family: "NanumSquare-Bold", Helvetica;
   font-size: 13px;
   color: #0f1c2f;
-  background: rgba(255,255,255,.92);
-  border: 1px solid rgba(255,255,255,.65);
-  border-radius: 10px;
-  padding: 4px 8px;
+  background: rgba(255, 255, 255, .96);
+  border: 1px solid rgba(255, 255, 255, .65);
+  border-radius: 999px;
+  padding: 6px 10px;
   text-align: center;
 }
 .detail-value {
-  font-family: "NanumSquare-Regular", Helvetica;
   font-size: 14px;
   color: #e9f1fb;
 }
 
-/* 노트 바 (우측 수치 표시 유지) */
+/* === 노트바 (가운데 퍼센트) === */
 .note-bar {
   position: relative;
   width: 100%;
-  height: 12px;
+  height: 16px;
   border-radius: 999px;
-  background: rgba(255,255,255,.18);
+  background: rgba(255, 255, 255, .18);
   overflow: hidden;
 }
 .note-fill {
-  height: 100%;
+  position: absolute;
+  inset: 0;
   width: 0%;
-  background: rgba(255,255,255,.92);
+  height: 100%;
+  background: rgba(255, 255, 255, .92);
   transition: width .9s ease;
+  z-index: 0;
 }
 .note-value {
   position: absolute;
-  right: -6px;
-  top: 50%;
-  transform: translate(100%, -50%);
-  font-size: 11px;
-  color: #e3effa;
-  white-space: nowrap;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f1c2f;
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+  pointer-events: none;
 }
 
-/* 기존 배지/노트 컨테이너는 사용 안 함
-.params-container, .param-badges { display:none; }
-*/
-
+/* === 애니메이션 === */
 .fade-in {
   opacity: 0;
   transform: translateY(6px);
@@ -357,45 +137,139 @@
   opacity: 1;
   transform: translateY(0);
 }
-
-/* ==== 노트 바 (가운데 퍼센트 표시) ==== */
-.note-bar {
-  position: relative;
-  width: 100%;
-  height: 14px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.18);
-  overflow: hidden;
+.pop-in {
+  transform: scale(.96);
+  opacity: 0;
+  transition: transform .35s ease, opacity .35s ease;
+}
+.pop-in.in {
+  transform: scale(1);
+  opacity: 1;
 }
 
-.note-fill {
-  position: absolute;
-  inset: 0;                /* top/right/bottom/left:0 */
-  height: 100%;
-  width: 0%;
-  background: rgba(255,255,255,.92);
-  z-index: 0;              /* 숫자 아래에 깔리도록 */
-  transition: width .9s ease;
-}
-
-/* 숫자를 바 "가운데"에 올리기 */
-.note-value {
-  position: absolute;
-  inset: 0;                /* 노트바 전체를 차지 */
-  display: flex;
+/* === 하단 고정 CTA 버튼 === */
+.floating-cta {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: max(10px, env(safe-area-inset-bottom));
+  z-index: 9999;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  z-index: 1;              /* fill 위로 */
-  font-size: 12px;
+  width: min(92vw, 420px);
+  height: 44px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #1c2d4f;
   font-weight: 700;
-  letter-spacing: .2px;
-  color: #0f1c2f;          /* 밝은 배경(채워진 부분)에서 잘 보이는 색 */
-  text-shadow: 0 1px 2px rgba(0,0,0,.35); /* 대비 강화 */
-  pointer-events: none;    /* 클릭 막지 않도록 */
+  font-size: 14px;
+  text-decoration: none;
+  border: 1px solid rgba(16, 38, 92, .2);
+  box-shadow: 0 6px 16px rgba(0,0,0,.15);
 }
 
-/* (선택) 채움이 적을 때 어두운 배경 위에서 더 잘 보이도록 색 반전 */
-.note-value.onfill {
+/* === 모바일 전용 === */
+@media (max-width: 767px) {
+  .element .overlap-group-wrapper {
+    width: 100vw;
+    max-width: 480px;
+    height: 100vh;
+  }
+  .details-panel {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 64px;  /* CTA 버튼 공간 확보 */
+    max-height: 38vh;
+  }
+  .element .sub-title {
+    font-size: 32px;
+  }
+  .element .title {
+    font-size: 16px;
+  }
+  .element .image {
+    max-width: 180px;
+  }
+}
+
+/* 혹시 남아있을지 모를 개발용 텍스트는 숨김 */
+.result-root .dev-toolbar,
+.dev-hint {
+  display: none !important;
+}
+
+/* === 모바일에서 반짝이/공유 아이콘 위치·크기 정리 === */
+@media (max-width: 767px) {
+  /* 반짝이 아이콘 두 개: 크기 줄이고 타이틀과 겹치지 않게 왼쪽으로 */
+  .start-icon-small {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 64px;      /* 타이틀 아래로 약간 내림 */
+    left: 14px;
+    opacity: 0.9;
+    z-index: 0;     /* 텍스트 위로 올라오지 않게 */
+  }
+  .start-icon-large {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 116px;
+    left: 12px;
+    opacity: 0.85;
+    z-index: 0;
+  }
+
+  /* 공유 아이콘: 카드 우상단으로, 크기 축소 */
+  .element .img {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    top: 10px;
+    right: 10px;
+    left: auto;     /* 기존 left 값 무효화 */
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,.25));
+    z-index: 2;
+  }
+}
+
+/* === 파라미터 패널 가독성 개선: 어두운 반투명 배경 + 그림자 === */
+.details-panel {
+  background: rgba(213, 214, 171, 0.6);          /* 진한 네이비 반투명 */
+  backdrop-filter: blur(3px);
+  box-shadow: 0 -8px 24px rgba(0,0,0,.25);
+}
+
+/* 값 텍스트는 선명한 흰색으로 */
+.detail-value {
+  color: #FFFFFF;
+}
+
+/* 노트바 숫자도 더 또렷하게 */
+.note-value {
+  color: #0f1c2f;                                /* 밝은 채움 위 기본색 */
+  text-shadow: 0 1px 2px rgba(0,0,0,.45);
+}
+.note-value.onfill {                              /* 채움이 많을 때 흰색 */
   color: #ffffff;
-  text-shadow: 0 1px 2px rgba(0,0,0,.55);
+}
+
+/* (선택) 노트 라벨/칩 대비 강화 */
+.detail-label {
+  background: rgba(255,255,255,.98);
+  border-color: rgba(255,255,255,.75);
+}
+
+/* (선택) 패널 안 스크롤바 얇게 */
+.details-panel {
+  scrollbar-width: thin;
+}
+.details-panel::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.details-panel::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.35);
+  border-radius: 999px;
 }
