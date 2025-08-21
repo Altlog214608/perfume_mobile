@@ -101,18 +101,27 @@ html, body {
   width: 100%;
   height: 16px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, .18);
+  background: rgba(90, 59, 59, 0.18);
   overflow: hidden;
 }
+
+/* ❌ 기존: inset:0 때문에 right:0도 고정되어 width 애니메이션이 보이지 않음 */
+/* .note-fill { position:absolute; inset:0; width:0%; ... } */
+
+/* ✅ 수정: left만 고정하고 right는 풀어둬야 width가 늘면서 좌→우로 채워짐 */
 .note-fill {
   position: absolute;
-  inset: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  /* right: auto;  // 명시해도 OK */
   width: 0%;
-  height: 100%;
-  background: rgba(255, 255, 255, .92);
-  transition: width .9s ease;
+  background: rgba(248, 248, 248, 0.92);
+  transition: width .9s cubic-bezier(.22,.61,.36,1);
   z-index: 0;
+  will-change: width;
 }
+
 .note-value {
   position: absolute;
   inset: 0;
@@ -272,4 +281,38 @@ html, body {
 .details-panel::-webkit-scrollbar-thumb {
   background: rgba(255,255,255,.35);
   border-radius: 999px;
+}
+
+/* 부드러운 등장(행용) */
+.appear {
+  opacity: 0;
+  transform: translateY(10px);
+  will-change: transform, opacity;
+}
+.appear.in {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity .45s cubic-bezier(.22,.61,.36,1),
+    transform .45s cubic-bezier(.22,.61,.36,1);
+  /* 각 행에서 inline style로 transition-delay를 줍니다 */
+}
+
+/* 이미지 팝인도 조금 더 부드럽게 */
+.pop-in {
+  transform: scale(.96);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.pop-in.in {
+  transform: scale(1);
+  opacity: 1;
+  transition:
+    transform .42s cubic-bezier(.22,.61,.36,1),
+    opacity .42s cubic-bezier(.22,.61,.36,1);
+}
+
+/* 노트바는 width 트랜지션 유지 (이미 있음) */
+.note-fill {
+  transition: width .9s cubic-bezier(.22,.61,.36,1);
 }
