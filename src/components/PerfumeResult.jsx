@@ -13,11 +13,11 @@ import croloys from "../assets/img/croloys.png";
 
 // hex 색상 → rgba 변환
 const hexToRgba = (hex, alpha = 1) => {
-  const c = hex.replace('#','');
-  const x = c.length === 3 ? c.split('').map(ch => ch+ch).join('') : c;
-  const r = parseInt(x.slice(0,2),16);
-  const g = parseInt(x.slice(2,4),16);
-  const b = parseInt(x.slice(4,6),16);
+  const c = hex.replace('#', '');
+  const x = c.length === 3 ? c.split('').map(ch => ch + ch).join('') : c;
+  const r = parseInt(x.slice(0, 2), 16);
+  const g = parseInt(x.slice(2, 4), 16);
+  const b = parseInt(x.slice(4, 6), 16);
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
@@ -31,14 +31,14 @@ const KOR = {
 export default function PerfumeResult() {
   const data = useMemo(
     () => [
-      { subTitle: "Lemonula",  title: "당신에게 어울리는", hash: "에너지",  hash1: "상큼함", topNote: "Lemon",    middleNote: "Rose",     baseNote: "Amber",     image: lemonula,  colors: { overlapGroup: "#b28a00", overlap: "#e6c74c" } },
-      { subTitle: "Flolarin",  title: "당신에게 어울리는", hash: "달콤함",  hash1: "상큼함", topNote: "Cucumber", middleNote: "Lavender", baseNote: "Cedarwood", image: flolarin, colors: { overlapGroup: "#b8721d", overlap: "#f7d08a" } },
-      { subTitle: "Essentria", title: "당신에게 어울리는", hash: "플로럴",  hash1: "로맨틱", topNote: "Raspberry", middleNote: "Rose",     baseNote: "Musk",      image: essentria, colors: { overlapGroup: "#7c3fa6", overlap: "#d6b3f7" } },
-      { subTitle: "Lumina",    title: "당신에게 어울리는", hash: "신비적",  hash1: "세련된", topNote: "Bergamot",  middleNote: "Jasmine",  baseNote: "Amber",     image: lumina,    colors: { overlapGroup: "#145c69", overlap: "#b97a2b" } },
-      { subTitle: "Cool Water",title: "당신에게 어울리는", hash: "시원함",  hash1: "남성적", topNote: "Bergamot",  middleNote: "Geranium", baseNote: "Vetiver",   image: coolwater, colors: { overlapGroup: "#1a3a6b", overlap: "#4a7dc7" } },
-      { subTitle: "Maruit",    title: "당신에게 어울리는", hash: "도시적",  hash1: "청량감", topNote: "Mint",      middleNote: "Lavender", baseNote: "Sandalwood",image: maruit,    colors: { overlapGroup: "#23446d", overlap: "#6bb0d6" } },
-      { subTitle: "Nectarua",  title: "당신에게 어울리는", hash: "관능적",  hash1: "시원함", topNote: "Mandarin",  middleNote: "Rose",     baseNote: "Amber",     image: nectarua,  colors: { overlapGroup: "#a86e1a", overlap: "#ffd07b" } },
-      { subTitle: "Croloys",   title: "당신에게 어울리는", hash: "관능적",  hash1: "시원함", topNote: "Marine",    middleNote: "Sage",     baseNote: "Musk",      image: croloys,   colors: { overlapGroup: "#132f5a", overlap: "#3559A6" } },
+      { subTitle: "Lemonula", title: "당신에게 어울리는", hash: "에너지", hash1: "상큼함", topNote: "Lemon", middleNote: "Rose", baseNote: "Amber", image: lemonula, colors: { overlapGroup: "#b28a00", overlap: "#e6c74c" } },
+      { subTitle: "Flolarin", title: "당신에게 어울리는", hash: "달콤함", hash1: "상큼함", topNote: "Cucumber", middleNote: "Lavender", baseNote: "Cedarwood", image: flolarin, colors: { overlapGroup: "#b8721d", overlap: "#f7d08a" } },
+      { subTitle: "Essentria", title: "당신에게 어울리는", hash: "플로럴", hash1: "로맨틱", topNote: "Raspberry", middleNote: "Rose", baseNote: "Musk", image: essentria, colors: { overlapGroup: "#7c3fa6", overlap: "#d6b3f7" } },
+      { subTitle: "Lumina", title: "당신에게 어울리는", hash: "신비적", hash1: "세련된", topNote: "Bergamot", middleNote: "Jasmine", baseNote: "Amber", image: lumina, colors: { overlapGroup: "#145c69", overlap: "#b97a2b" } },
+      { subTitle: "Cool Water", title: "당신에게 어울리는", hash: "시원함", hash1: "남성적", topNote: "Bergamot", middleNote: "Geranium", baseNote: "Vetiver", image: coolwater, colors: { overlapGroup: "#1a3a6b", overlap: "#4a7dc7" } },
+      { subTitle: "Maruit", title: "당신에게 어울리는", hash: "도시적", hash1: "청량감", topNote: "Mint", middleNote: "Lavender", baseNote: "Sandalwood", image: maruit, colors: { overlapGroup: "#23446d", overlap: "#6bb0d6" } },
+      { subTitle: "Nectarua", title: "당신에게 어울리는", hash: "관능적", hash1: "시원함", topNote: "Mandarin", middleNote: "Rose", baseNote: "Amber", image: nectarua, colors: { overlapGroup: "#a86e1a", overlap: "#ffd07b" } },
+      { subTitle: "Croloys", title: "당신에게 어울리는", hash: "관능적", hash1: "시원함", topNote: "Marine", middleNote: "Sage", baseNote: "Musk", image: croloys, colors: { overlapGroup: "#132f5a", overlap: "#3559A6" } },
     ],
     []
   );
@@ -52,7 +52,9 @@ export default function PerfumeResult() {
   const [showTitle, setShowTitle] = useState(false);
   const [showImage, setShowImage] = useState(false);
   const [visibleRows, setVisibleRows] = useState([]);
-  const [showShare, setShowShare] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+  const openShare = () => setShareOpen(true);
+  const closeShare = () => setShareOpen(false);
 
   const rowOrder = ["gender", "age", "color", "style", "top", "middle", "base"];
 
@@ -76,9 +78,9 @@ export default function PerfumeResult() {
 
   // 한국어 변환
   const korGender = KOR.gender[params.gender] ?? params.gender;
-  const korAge    = KOR.age[params.age] ?? params.age;
-  const korColor  = KOR.color[params.color] ?? params.color;
-  const korStyle  = KOR.style[params.style] ?? params.style;
+  const korAge = KOR.age[params.age] ?? params.age;
+  const korColor = KOR.color[params.color] ?? params.color;
+  const korStyle = KOR.style[params.style] ?? params.style;
 
   const sampleUrl = useMemo(() => buildSampleUrl(), []);
   const currentUrl = useMemo(() => window.location.href, []);
@@ -100,13 +102,14 @@ export default function PerfumeResult() {
       await navigator.clipboard.writeText(currentUrl);
       alert("링크가 복사되었습니다.");
     }
-    setShowShare(false);
+    closeShare();
   };
+
 
   const shareToX = () => {
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(currentUrl)}`;
     window.open(url, "_blank");
-    setShowShare(false);
+    closeShare();
   };
 
   const shareToKakao = () => {
@@ -119,25 +122,27 @@ export default function PerfumeResult() {
       content: {
         title: item.subTitle,
         description: `${korStyle} · ${korColor} · ${korAge}`,
-        imageUrl: item.image, // ⚠️ public/ 절대경로 권장
+        imageUrl: item.image,
         link: { mobileWebUrl: currentUrl, webUrl: currentUrl },
       },
       buttons: [{ title: "자세히 보기", link: { mobileWebUrl: currentUrl, webUrl: currentUrl } }],
     });
-    setShowShare(false);
+    closeShare();
   };
 
   const shareToInstagram = async () => {
     if (navigator.share) return shareNative();
     await navigator.clipboard.writeText(currentUrl);
     alert("Instagram은 웹 공유가 제한되어 링크를 복사했습니다.");
-    setShowShare(false);
+    closeShare();
   };
 
-  const panelBg   = useMemo(() => hexToRgba(item.colors.overlapGroup, 0.78), [item]);
-  const panelLine = useMemo(() => hexToRgba(item.colors.overlap,      0.22), [item]);
-  const chipBg    = useMemo(() => hexToRgba("#ffffff", 0.96), []);
-  const chipText  = "#0f1c2f";
+
+
+  const panelBg = useMemo(() => hexToRgba(item.colors.overlapGroup, 0.78), [item]);
+  const panelLine = useMemo(() => hexToRgba(item.colors.overlap, 0.22), [item]);
+  const chipBg = useMemo(() => hexToRgba("#ffffff", 0.96), []);
+  const chipText = "#0f1c2f";
 
   return (
     <div className="element result-root">
@@ -155,7 +160,13 @@ export default function PerfumeResult() {
                   className="img"
                   src="https://c.animaapp.com/AUxvzaXH/img/share.svg"
                   alt="공유하기"
-                  onClick={() => setShowShare(true)}
+                  onClick={() => {
+                    if (navigator.share) {
+                      shareNative();    // 모바일/지원 브라우저: 곧바로 네이티브 공유 시트
+                    } else {
+                      openShare();      // PC 등: 바텀시트 열기
+                    }
+                  }}
                 />
 
                 <img className={`image pop-in ${showImage ? "in" : ""}`} src={item.image} alt={item.subTitle} />
@@ -182,16 +193,34 @@ export default function PerfumeResult() {
         </div>
       </div>
 
-      {/* 공유 모달 */}
-      {showShare && (
-        <div className="share-modal">
-          <button onClick={shareNative}>기기 기본 공유</button>
-          <button onClick={shareToX}>X(트위터)</button>
-          <button onClick={shareToInstagram}>Instagram</button>
-          <button onClick={shareToKakao}>카카오톡</button>
-          <button onClick={() => setShowShare(false)}>닫기</button>
+      {/* 공유 바텀시트 */}
+      <div className={`share-backdrop ${shareOpen ? "open" : ""}`} onClick={closeShare} />
+      <div className={`share-sheet ${shareOpen ? "open" : ""}`} role="dialog" aria-modal="true">
+        <div className="handle" />
+        <h4>공유하기</h4>
+        <div className="share-grid">
+          <button className="share-btn" onClick={shareToKakao}>
+            <div className="share-icon icon-kakao">K</div>
+            <span className="share-label">카카오톡</span>
+          </button>
+          <button className="share-btn" onClick={shareToX}>
+            <div className="share-icon icon-x">𝕏</div>
+            <span className="share-label">X(트위터)</span>
+          </button>
+          <button className="share-btn" onClick={shareNative}>
+            <div className="share-icon icon-more">↗︎</div>
+            <span className="share-label">기기공유</span>
+          </button>
+          <button className="share-btn" onClick={async () => { await navigator.clipboard.writeText(currentUrl); alert("링크가 복사되었습니다."); closeShare(); }}>
+            <div className="share-icon icon-copy">⎘</div>
+            <span className="share-label">링크복사</span>
+          </button>
         </div>
-      )}
+        <div className="share-footer">
+          <button className="share-cancel" onClick={closeShare}>닫기</button>
+        </div>
+      </div>
+
 
       <a className="floating-cta" href={sampleUrl}>예시 값으로 채우기(이동)</a>
     </div>
