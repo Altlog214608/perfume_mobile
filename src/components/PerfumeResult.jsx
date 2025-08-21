@@ -194,7 +194,7 @@ export default function PerfumeResult() {
                 <div className="sub-title">{item.subTitle}</div>
                 <div className="title">{item.title}</div>
 
-                {/* 공유 버튼 */}
+                {/* 공유 버튼
                 <img
                   className="img"
                   src="https://c.animaapp.com/AUxvzaXH/img/share.svg"
@@ -207,7 +207,30 @@ export default function PerfumeResult() {
                     }
                   }}
                 />
-                <button className="download-btn" onClick={downloadCurrentImage}>⬇︎ 저장</button>
+                <button className="download-btn" onClick={downloadCurrentImage}>⬇︎ 저장</button> */}
+
+                {/* 공유 아이콘 (기존) */}
+                <button className="icon-chip" aria-label="공유하기" onClick={openShare}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    {/* share (Share-2 스타일) */}
+                    <circle cx="18" cy="5" r="3" />
+                    <circle cx="6" cy="12" r="3" />
+                    <circle cx="18" cy="19" r="3" />
+                    <path d="M8.59 13.51l6.83 3.98M15.41 6.51L8.59 10.49" />
+                  </svg>
+                </button>
+
+                {/* 다운로드 아이콘 (트레이 + 아래화살표) */}
+                <button className="icon-chip" aria-label="이미지 저장" onClick={downloadCurrentImage}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    {/* Download */}
+                    <path d="M12 3v10" />
+                    <path d="M8 9l4 4 4-4" />
+                    <path d="M21 21H3a2 2 0 0 1-2-2v0a2 2 0 0 1 2-2h18a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2z" />
+                  </svg>
+                </button>
 
                 <img className={`image pop-in ${showImage ? "in" : ""}`} src={item.image} alt={item.subTitle} />
                 <p className="hash">#{item.hash}</p>
@@ -288,7 +311,7 @@ function DetailRow({ label, value, visible, delayMs = 0, chipBg, chipText }) {
   );
 }
 
-function NoteRow({ label, targetValue, visible, delayMs = 0 , trackColor, fillColor}) {
+function NoteRow({ label, targetValue, visible, delayMs = 0, trackColor, fillColor }) {
   const [width, setWidth] = useState(0);
   const [num, setNum] = useState(0);
   const fillRef = React.useRef(null);

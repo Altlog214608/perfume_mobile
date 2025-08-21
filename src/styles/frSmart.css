@@ -291,3 +291,16 @@ html, body {
 @media (max-width: 360px) {
   .detail-row { grid-template-columns: 140px 1fr; }
 }
+
+.icon-chip{
+  position:absolute; /* 필요 시 배치 */
+  top:10px; right:10px; /* 공유 버튼 위치 */
+  display:grid; place-items:center;
+  width:36px; height:36px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,.08);
+  background:#fff;
+  color:#0f1c2f;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+.icon-chip + .icon-chip{ top:48px; } /* 저장 버튼은 공유 아래로 */
