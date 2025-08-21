@@ -186,7 +186,7 @@ export default function PerfumeResult() {
   return (
     <div className="element result-root">
       <div className="overlap-group-wrapper" ref={cardRef}>
-        <div className="overlap-group" style={{ backgroundColor: item.colors.overlapGroup }}>
+        <div className="overlap-group">
           <div className="overlap" style={{ backgroundColor: item.colors.overlap }}>
             {/* 타이틀/이미지 */}
             <div className={`div appear ${showTitle ? "in" : ""}`}>
