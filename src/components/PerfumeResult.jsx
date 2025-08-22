@@ -217,7 +217,7 @@ export default function PerfumeResult() {
       const dataUrl = await captureCardAsJpeg();
       const publicUrl = await uploadStoryImage(dataUrl);
       setStoryPublicUrl(publicUrl);
-      setStorySheetOpen(true);   // ❗자동 이동 대신 사용자 탭 유도
+      setStorySheetOpen(true);  // ✅ 사용자가 링크를 탭해서 여는 구조
     } catch (e) {
       console.error(e);
       await navigator.clipboard.writeText(window.location.href);
@@ -228,6 +228,7 @@ export default function PerfumeResult() {
   };
 
 
+
   const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
   const isAndroid = /Android/i.test(navigator.userAgent);
 
@@ -235,8 +236,7 @@ export default function PerfumeResult() {
     `instagram-stories://share?source_application=perfume-mobile&background_image_url=${encodeURIComponent(img)}`;
 
   const buildAndroidIntentUrl = (img) =>
-    `intent://share?source_application=perfume-mobile&background_image_url=${encodeURIComponent(img)}#Intent;scheme=instagram-stories;package=com.instagram.android;end`;
-
+    `intent://share?source_application=perfume-mobile&background_image_url=${encodeURIComponent(img)}#Intent;scheme=instagram-stories;package=com.instagram.android;S.browser_fallback_url=${encodeURIComponent('https://www.instagram.com/')};end`;
 
   // 기존
   // const panelBg   = useMemo(() => hexToRgba(item.colors.overlapGroup, 0.78), [item]);
@@ -375,20 +375,16 @@ export default function PerfumeResult() {
         {storyPublicUrl ? (
           <>
             {isiOS && (
-              <a
-                className="share-btn primary"
+              <a className="share-btn primary"
                 href={buildIosStoryUrl(storyPublicUrl)}
-                onClick={closeStorySheet}
-              >
+                onClick={closeStorySheet}>
                 iOS에서 인스타 스토리 열기
               </a>
             )}
             {isAndroid && (
-              <a
-                className="share-btn primary"
+              <a className="share-btn primary"
                 href={buildAndroidIntentUrl(storyPublicUrl)}
-                onClick={closeStorySheet}
-              >
+                onClick={closeStorySheet}>
                 Android에서 인스타 스토리 열기
               </a>
             )}
