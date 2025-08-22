@@ -11,6 +11,9 @@ import maruit from "../assets/img/maruit.png";
 import nectarua from "../assets/img/nectarua.png";
 import croloys from "../assets/img/croloys.png";
 
+import html2canvas from "html2canvas";
+
+
 // hex 색상 → rgba 변환
 const hexToRgba = (hex, alpha = 1) => {
   const c = hex.replace('#', '');
@@ -126,6 +129,39 @@ export default function PerfumeResult() {
     }
   }, []);
 
+  // (컴포넌트 내부)
+  const captureCardAsJpeg = async () => {
+    const root = cardRef.current;
+    // window.html2canvas 대신 다이내믹 import로 안정화
+    const html2canvas = window.html2canvas || (await import("html2canvas")).default;
+
+    if (!root || !html2canvas) throw new Error("html2canvas 준비 안됨");
+
+    const canvas = await html2canvas(root, {
+      backgroundColor: "#ffffff",      // 스토리는 흰 배경 추천(투명 PNG보다 호환성↑)
+      scale: Math.max(2, window.devicePixelRatio || 1),
+      useCORS: true,                   // 외부 이미지가 있으면 필요
+      scrollY: -window.scrollY,        // 화면 스크롤 보정(선택)
+    });
+    // 스토리용은 jpg 권장(용량↓)
+    return canvas.toDataURL("image/jpeg", 0.92);
+  };
+
+  const uploadStoryImage = async (dataUrl) => {
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        dataUrl,
+        filename: `story-${item?.subTitle || "perfume"}-${Date.now()}.jpg`,
+      }),
+    });
+    if (!res.ok) throw new Error("업로드 실패");
+    const json = await res.json();
+    return json.url; // 퍼블릭 URL
+  };
+
+
   // 공유 함수들
   const shareNative = async () => {
     if (navigator.share) {
@@ -190,34 +226,48 @@ export default function PerfumeResult() {
     };
     open(0);
   };
-  
+
   // 인스타 "스토리" 공유
-  const shareToInstagramStory = () => {
-    // 모바일만 앱 스킴 시도
+  const shareToInstagramStory = async () => {
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     if (!isMobile) {
-      navigator.clipboard.writeText(currentUrl);
-      alert("PC에선 인스타 공유가 제한돼 링크를 복사했습니다.");
-      closeShare();
+      await navigator.clipboard.writeText(window.location.href);
+      alert("PC에선 인스타 공유가 제한되어 링크를 복사했습니다.");
+      closeShare?.();
       return;
     }
 
-    // 인스타가 인식하는 대표 스킴 2종(단말마다 한쪽만 동작하는 경우가 있어 순차 시도)
-    const schemes = [
-      // iOS/일부 단말
-      `instagram-stories://share?source_application=perfume-mobile&background_image_url=${encodeURIComponent(storyImageUrl)}`,
-      // 일부 단말(구버전)
-      `instagram://story-camera?background_image=${encodeURIComponent(storyImageUrl)}`
-    ];
+    try {
+      // 1) 캡처
+      const dataUrl = await captureCardAsJpeg();
 
-    tryOpenScheme(schemes, () => {
-      // 폴백: 링크 복사
-      navigator.clipboard.writeText(currentUrl);
-      alert("인스타 앱을 열 수 없어 링크를 복사했습니다. 인스타 앱에서 스토리에 붙여넣어 주세요.");
-    });
+      // 2) 업로드(공개 URL 획득)
+      const publicUrl = await uploadStoryImage(dataUrl);
 
-    closeShare();
+      // 3) 스킴 오픈(단말별 호환 2종 순차 시도)
+      const schemes = [
+        `instagram-stories://share?source_application=perfume-mobile&background_image_url=${encodeURIComponent(publicUrl)}`,
+        `instagram://story-camera?background_image=${encodeURIComponent(publicUrl)}`,
+      ];
+
+      let i = 0;
+      const tryOpen = () => {
+        if (i >= schemes.length) return;
+        window.location.href = schemes[i++];
+        setTimeout(() => {
+          if (!document.hidden) tryOpen(); // 앱 미설치/실패 시 다음 시도
+        }, 900);
+      };
+      tryOpen();
+    } catch (e) {
+      console.error(e);
+      await navigator.clipboard.writeText(window.location.href);
+      alert("인스타 앱을 열 수 없어 링크를 복사했습니다.");
+    } finally {
+      closeShare?.();
+    }
   };
+
 
 
   // 기존
