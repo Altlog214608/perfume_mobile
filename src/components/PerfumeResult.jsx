@@ -162,13 +162,62 @@ export default function PerfumeResult() {
     closeShare();
   };
 
-  const shareToInstagram = async () => {
-    if (navigator.share) return shareNative();
-    await navigator.clipboard.writeText(currentUrl);
-    alert("Instagram은 웹 공유가 제한되어 링크를 복사했습니다.");
+  // 현재 향수 이미지의 "절대 URL" (인스타가 직접 가져가므로 절대경로 필요)
+  const storyImageUrl = useMemo(() => {
+    try {
+      return new URL(item.image, window.location.origin).href;
+    } catch {
+      return window.location.origin + "/fallback-story.jpg"; // 없으면 임시
+    }
+  }, [item.image]);
+
+  // 스킴 시도 헬퍼 (앱 미설치/PC 환경 대비)
+  const tryOpenScheme = (urls, fallback) => {
+    let opened = false;
+    const open = (i) => {
+      if (i >= urls.length) {
+        fallback?.();
+        return;
+      }
+      // 스킴 이동
+      window.location.href = urls[i];
+      // 900ms 후에도 페이지가 떠 있으면 실패로 보고 다음/폴백
+      setTimeout(() => {
+        if (!document.hidden) {
+          open(i + 1);
+        }
+      }, 900);
+    };
+    open(0);
+  };
+  
+  // 인스타 "스토리" 공유
+  const shareToInstagramStory = () => {
+    // 모바일만 앱 스킴 시도
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (!isMobile) {
+      navigator.clipboard.writeText(currentUrl);
+      alert("PC에선 인스타 공유가 제한돼 링크를 복사했습니다.");
+      closeShare();
+      return;
+    }
+
+    // 인스타가 인식하는 대표 스킴 2종(단말마다 한쪽만 동작하는 경우가 있어 순차 시도)
+    const schemes = [
+      // iOS/일부 단말
+      `instagram-stories://share?source_application=perfume-mobile&background_image_url=${encodeURIComponent(storyImageUrl)}`,
+      // 일부 단말(구버전)
+      `instagram://story-camera?background_image=${encodeURIComponent(storyImageUrl)}`
+    ];
+
+    tryOpenScheme(schemes, () => {
+      // 폴백: 링크 복사
+      navigator.clipboard.writeText(currentUrl);
+      alert("인스타 앱을 열 수 없어 링크를 복사했습니다. 인스타 앱에서 스토리에 붙여넣어 주세요.");
+    });
+
     closeShare();
   };
-
 
 
   // 기존
@@ -285,6 +334,10 @@ export default function PerfumeResult() {
           <button className="share-btn" onClick={shareNative}>
             <div className="share-icon icon-more">↗︎</div>
             <span className="share-label">기기공유</span>
+          </button>
+          <button className="share-btn" onClick={shareToInstagramStory}>
+            <div className="share-icon" style={{ background: "linear-gradient(45deg,#f58529,#feda77,#dd2a7b,#8134af,#515bd4)" }}>📸</div>
+            <span className="share-label">Instagram 스토리</span>
           </button>
           <button className="share-btn" onClick={async () => { await navigator.clipboard.writeText(currentUrl); alert("링크가 복사되었습니다."); closeShare(); }}>
             <div className="share-icon icon-copy">⎘</div>
