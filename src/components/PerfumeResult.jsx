@@ -59,12 +59,12 @@ export default function PerfumeResult() {
   const downloadCurrentImage = async () => {
     try {
       const root = cardRef.current;                 // 캡처할 대상
-      if (!root || !window.html2canvas) {
+      if (!root || !html2canvas) {
         alert("화면 캡처 라이브러리가 아직 로드되지 않았어요. 잠시 후 다시 시도해주세요.");
         return;
       }
       // 스케일 2배로 선명하게, CORS 허용
-      const canvas = await window.html2canvas(root, {
+      const canvas = await html2canvas(root, {
         backgroundColor: null,
         scale: window.devicePixelRatio > 1 ? 2 : 2,
         useCORS: true,
@@ -196,41 +196,12 @@ export default function PerfumeResult() {
       content: {
         title: item.subTitle,
         description: `${korStyle} · ${korColor} · ${korAge}`,
-        imageUrl: item.image,
+        imageUrl: new URL(item.image, window.location.origin).href,
         link: { mobileWebUrl: currentUrl, webUrl: currentUrl },
       },
       buttons: [{ title: "자세히 보기", link: { mobileWebUrl: currentUrl, webUrl: currentUrl } }],
     });
     closeShare();
-  };
-
-  // 현재 향수 이미지의 "절대 URL" (인스타가 직접 가져가므로 절대경로 필요)
-  const storyImageUrl = useMemo(() => {
-    try {
-      return new URL(item.image, window.location.origin).href;
-    } catch {
-      return window.location.origin + "/fallback-story.jpg"; // 없으면 임시
-    }
-  }, [item.image]);
-
-  // 스킴 시도 헬퍼 (앱 미설치/PC 환경 대비)
-  const tryOpenScheme = (urls, fallback) => {
-    let opened = false;
-    const open = (i) => {
-      if (i >= urls.length) {
-        fallback?.();
-        return;
-      }
-      // 스킴 이동
-      window.location.href = urls[i];
-      // 900ms 후에도 페이지가 떠 있으면 실패로 보고 다음/폴백
-      setTimeout(() => {
-        if (!document.hidden) {
-          open(i + 1);
-        }
-      }, 900);
-    };
-    open(0);
   };
 
   // 인스타 "스토리" 공유
