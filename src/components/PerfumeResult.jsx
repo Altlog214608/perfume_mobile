@@ -49,6 +49,12 @@ export default function PerfumeResult() {
   // ...기존 state들...
   const cardRef = React.useRef(null);
 
+
+  // 공유용: 스토리 이미지 퍼블릭 URL과 딥링크 시트 표시
+  const [storyPublicUrl, setStoryPublicUrl] = useState(null);
+  const [storySheetOpen, setStorySheetOpen] = useState(false);
+  const closeStorySheet = () => setStorySheetOpen(false);
+
   // 전체 카드(향수~파라미터 끝) 이미지 저장
   const downloadCurrentImage = async () => {
     try {
@@ -232,33 +238,15 @@ export default function PerfumeResult() {
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     if (!isMobile) {
       await navigator.clipboard.writeText(window.location.href);
-      alert("PC에선 인스타 공유가 제한되어 링크를 복사했습니다.");
+      alert("PC에서는 인스타 공유가 제한되어 링크를 복사했습니다.");
       closeShare?.();
       return;
     }
-
     try {
-      // 1) 캡처
       const dataUrl = await captureCardAsJpeg();
-
-      // 2) 업로드(공개 URL 획득)
       const publicUrl = await uploadStoryImage(dataUrl);
-
-      // 3) 스킴 오픈(단말별 호환 2종 순차 시도)
-      const schemes = [
-        `instagram-stories://share?source_application=perfume-mobile&background_image_url=${encodeURIComponent(publicUrl)}`,
-        `instagram://story-camera?background_image=${encodeURIComponent(publicUrl)}`,
-      ];
-
-      let i = 0;
-      const tryOpen = () => {
-        if (i >= schemes.length) return;
-        window.location.href = schemes[i++];
-        setTimeout(() => {
-          if (!document.hidden) tryOpen(); // 앱 미설치/실패 시 다음 시도
-        }, 900);
-      };
-      tryOpen();
+      setStoryPublicUrl(publicUrl);
+      setStorySheetOpen(true);   // ❗자동 이동 대신 사용자 탭 유도
     } catch (e) {
       console.error(e);
       await navigator.clipboard.writeText(window.location.href);
@@ -268,6 +256,15 @@ export default function PerfumeResult() {
     }
   };
 
+
+  const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const isAndroid = /Android/i.test(navigator.userAgent);
+
+  const buildIosStoryUrl = (img) =>
+    `instagram-stories://share?source_application=perfume-mobile&background_image_url=${encodeURIComponent(img)}`;
+
+  const buildAndroidIntentUrl = (img) =>
+    `intent://share?source_application=perfume-mobile&background_image_url=${encodeURIComponent(img)}#Intent;scheme=instagram-stories;package=com.instagram.android;end`;
 
 
   // 기존
@@ -399,6 +396,54 @@ export default function PerfumeResult() {
         </div>
       </div>
 
+      {/* 스토리 딥링크 시트 */}
+      {/* 인스타 스토리 열기 시트 */}
+      <div className={`share-sheet ${storySheetOpen ? "open" : ""}`} role="dialog" aria-modal="true">
+        <div className="handle" />
+        <h4>Instagram 스토리로 공유</h4>
+        {storyPublicUrl ? (
+          <>
+            {isiOS && (
+              <a
+                className="share-btn primary"
+                href={buildIosStoryUrl(storyPublicUrl)}
+                onClick={closeStorySheet}
+              >
+                iOS에서 인스타 스토리 열기
+              </a>
+            )}
+            {isAndroid && (
+              <a
+                className="share-btn primary"
+                href={buildAndroidIntentUrl(storyPublicUrl)}
+                onClick={closeStorySheet}
+              >
+                Android에서 인스타 스토리 열기
+              </a>
+            )}
+
+            <button
+              className="share-btn"
+              onClick={async () => {
+                await navigator.clipboard.writeText(storyPublicUrl);
+                alert("스토리 이미지 링크를 복사했어요. 인스타 앱에서 스토리 배경으로 붙여넣기 하세요.");
+                closeStorySheet();
+              }}
+            >
+              링크 복사
+            </button>
+
+            <p className="dev-hint" style={{ opacity: .8, fontSize: 12, marginTop: 8 }}>
+              인앱 브라우저에서는 스킴이 막힐 수 있어요. Safari/Chrome에서 다시 시도해 주세요.
+            </p>
+          </>
+        ) : (
+          <p>이미지 준비 중…</p>
+        )}
+        <div className="share-footer">
+          <button className="share-cancel" onClick={closeStorySheet}>닫기</button>
+        </div>
+      </div>
 
       <a className="floating-cta" href={sampleUrl}>예시 값으로 채우기(이동)</a>
     </div>
