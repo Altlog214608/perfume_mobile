@@ -153,6 +153,38 @@ export default function PerfumeResult() {
     return canvas.toDataURL("image/jpeg", 0.92);
   };
 
+  // 캡처 → File 만들기
+  const captureCardAsFile = async () => {
+    const dataUrl = await captureCardAsJpeg(); // 이미 있는 함수 재사용 (jpg dataURL)
+    const res = await fetch(dataUrl);
+    const blob = await res.blob();             // image/jpeg Blob
+    const file = new File([blob], `${item.subTitle}.jpg`, { type: 'image/jpeg' });
+    return file;
+  };
+
+  // Android 중심: 파일 공유 시도 → 실패 시 다운로드로 폴백
+  const shareStoryViaWebShare = async () => {
+    try {
+      const file = await captureCardAsFile();
+      const shareData = {
+        files: [file],
+        title: `${item.subTitle} 추천 향수`,
+        text: `${item.subTitle} - ${item.title}`,
+      };
+      if (navigator.canShare && navigator.canShare(shareData)) {
+        await navigator.share(shareData);   // ▶︎ 공유 시트 열림 (인스타 선택 가능)
+      } else {
+        throw new Error('Web Share with files not supported');
+      }
+    } catch (e) {
+      console.warn('Web Share 실패, 다운로드로 폴백:', e);
+      await downloadCurrentImage();         // 이미 구현한 다운로드 함수 재사용
+      alert("이미지를 저장했습니다. 인스타 스토리에서 갤러리에서 선택하여 업로드하세요.");
+    } finally {
+      closeShare?.();
+    }
+  };
+
   const uploadStoryImage = async (dataUrl) => {
     const res = await fetch("/api/upload", {
       method: "POST",
@@ -354,7 +386,7 @@ export default function PerfumeResult() {
             <div className="share-icon icon-more">↗︎</div>
             <span className="share-label">기기공유</span>
           </button>
-          <button className="share-btn" onClick={shareToInstagramStory}>
+          <button className="share-btn" onClick={shareStoryViaWebShare}>
             <div className="share-icon" style={{ background: "linear-gradient(45deg,#f58529,#feda77,#dd2a7b,#8134af,#515bd4)" }}>📸</div>
             <span className="share-label">Instagram 스토리</span>
           </button>
