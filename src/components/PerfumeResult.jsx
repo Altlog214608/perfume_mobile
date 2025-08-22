@@ -238,6 +238,7 @@ export default function PerfumeResult() {
   const buildAndroidIntentUrl = (img) =>
     `intent://share?source_application=perfume-mobile&background_image_url=${encodeURIComponent(img)}#Intent;scheme=instagram-stories;package=com.instagram.android;S.browser_fallback_url=${encodeURIComponent('https://www.instagram.com/')};end`;
 
+
   // 기존
   // const panelBg   = useMemo(() => hexToRgba(item.colors.overlapGroup, 0.78), [item]);
   // const panelLine = useMemo(() => hexToRgba(item.colors.overlap,      0.22), [item]);
