@@ -369,7 +369,7 @@ export default function PerfumeResult() {
       </div>
 
       {/* 공유 바텀시트 */}
-      <div className={`share-backdrop ${shareOpen ? "open" : ""}`} onClick={closeShare} />
+      <div className={`share-backdrop ${shareOpen ? "open" : ""}`} onClick={shareStoryViaWebShare} />
       <div className={`share-sheet ${shareOpen ? "open" : ""}`} role="dialog" aria-modal="true">
         <div className="handle" />
         <h4>공유하기</h4>
