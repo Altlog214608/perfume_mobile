@@ -31,8 +31,8 @@ export function parseQuery(search, maxPerfumeId) {
   // 새 파라미터까지 모두 전달 (문자/코드 동시 지원)
   const params = {
     // 기존 문자열 파라미터(호환)
-    gender: sp.get("gender") ?? "unspecified",
-    age: sp.get("age") ?? "20s",
+    gender: sp.get("gender") || null,   // 문자열 쿼리가 없으면 null
+    age: sp.get("age") || null,
 
     // 새 필드들 (문자/코드 동시 지원)
     mbti: (sp.get("mbti") || "").toUpperCase() || null,      // 예: INFP

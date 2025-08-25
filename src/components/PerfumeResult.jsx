@@ -113,34 +113,34 @@ const FAMILY_DISPLAY = {
 
 // PerfumeResult.jsx 의 룩업 상수들 근처(예: FAMILY_DISPLAY 아래)에 추가
 const HASH_BY_ID = {
-  1:  { ko: ["따뜻함", "안정감"],     en: ["Warm", "Grounding"] },
-  2:  { ko: ["상큼함", "활력"],       en: ["Zesty", "Energizing"] },
-  3:  { ko: ["포근함", "비누향"],     en: ["Cozy", "Clean"] },
-  4:  { ko: ["청량함", "시원함"],     en: ["Refreshing", "Cool"] },
-  5:  { ko: ["풀내음", "산뜻함"],     en: ["Leafy", "Fresh"] },
-  6:  { ko: ["깔끔함", "데일리"],     en: ["Clean", "Everyday"] },
-  7:  { ko: ["청초함", "은은함"],     en: ["Delicate", "Airy"] },
-  8:  { ko: ["로맨틱", "우아함"],     en: ["Romantic", "Elegant"] },
-  9:  { ko: ["달콤함", "발랄함"],     en: ["Sweet", "Playful"] },
-  10: { ko: ["상쾌함", "편안함"],     en: ["Refreshing", "Calming"] },
-  11: { ko: ["관능적", "대담함"],     en: ["Sensual", "Bold"] },
-  12: { ko: ["세련됨", "남성적"],     en: ["Refined", "Masculine"] },
+  1: { ko: ["따뜻함", "안정감"], en: ["Warm", "Grounding"] },
+  2: { ko: ["상큼함", "활력"], en: ["Zesty", "Energizing"] },
+  3: { ko: ["포근함", "비누향"], en: ["Cozy", "Clean"] },
+  4: { ko: ["청량함", "시원함"], en: ["Refreshing", "Cool"] },
+  5: { ko: ["풀내음", "산뜻함"], en: ["Leafy", "Fresh"] },
+  6: { ko: ["깔끔함", "데일리"], en: ["Clean", "Everyday"] },
+  7: { ko: ["청초함", "은은함"], en: ["Delicate", "Airy"] },
+  8: { ko: ["로맨틱", "우아함"], en: ["Romantic", "Elegant"] },
+  9: { ko: ["달콤함", "발랄함"], en: ["Sweet", "Playful"] },
+  10: { ko: ["상쾌함", "편안함"], en: ["Refreshing", "Calming"] },
+  11: { ko: ["관능적", "대담함"], en: ["Sensual", "Bold"] },
+  12: { ko: ["세련됨", "남성적"], en: ["Refined", "Masculine"] },
 };
 
 // 번호별 해시태그(캐주얼 톤) — 값에는 # 미포함!
 const HASH_BY_ID_casur = {
-  1:  { ko: ["포근무드", "우디감성"],       en: ["CozyVibes", "WoodyVibes"] },
-  2:  { ko: ["상큼무드", "비타민향"],       en: ["ZestyVibes", "CitrusPop"] },
-  3:  { ko: ["스킨센트", "비누향무드"],     en: ["SkinScent", "CleanVibes"] },
-  4:  { ko: ["청량무드", "바다향"],         en: ["SeaBreeze", "CoolVibes"] },
-  5:  { ko: ["초록무드", "허브감성"],       en: ["GreenVibes", "HerbalFresh"] },
-  6:  { ko: ["데일리향", "클린코튼"],       en: ["EverydayScent", "CleanCotton"] },
-  7:  { ko: ["청초무드", "은은플로럴"],     en: ["SoftFloral", "AiryVibes"] },
-  8:  { ko: ["로맨틱무드", "우아한플로럴"], en: ["RomanticVibes", "ElegantFloral"] },
-  9:  { ko: ["달달무드", "상큼달콤"],       en: ["SweetVibes", "FruityFun"] },
-  10: { ko: ["상쾌무드", "허브테라피"],     en: ["FreshHerbal", "CalmVibes"] },
-  11: { ko: ["관능무드", "스파이시무드"],   en: ["SensualVibes", "SpicyEdge"] },
-  12: { ko: ["바버샵무드", "클래식무드"],   en: ["BarbershopVibes", "ClassicVibes"] },
+  1: { ko: ["포근무드", "우디감성"], en: ["CozyVibes", "WoodyVibes"] },
+  2: { ko: ["상큼무드", "비타민향"], en: ["ZestyVibes", "CitrusPop"] },
+  3: { ko: ["스킨센트", "비누향무드"], en: ["SkinScent", "CleanVibes"] },
+  4: { ko: ["청량무드", "바다향"], en: ["SeaBreeze", "CoolVibes"] },
+  5: { ko: ["초록무드", "허브감성"], en: ["GreenVibes", "HerbalFresh"] },
+  6: { ko: ["데일리향", "클린코튼"], en: ["EverydayScent", "CleanCotton"] },
+  7: { ko: ["청초무드", "은은플로럴"], en: ["SoftFloral", "AiryVibes"] },
+  8: { ko: ["로맨틱무드", "우아한플로럴"], en: ["RomanticVibes", "ElegantFloral"] },
+  9: { ko: ["달달무드", "상큼달콤"], en: ["SweetVibes", "FruityFun"] },
+  10: { ko: ["상쾌무드", "허브테라피"], en: ["FreshHerbal", "CalmVibes"] },
+  11: { ko: ["관능무드", "스파이시무드"], en: ["SensualVibes", "SpicyEdge"] },
+  12: { ko: ["바버샵무드", "클래식무드"], en: ["BarbershopVibes", "ClassicVibes"] },
 };
 
 // 1) i18n 사전 (컴포넌트 위)
@@ -220,9 +220,34 @@ const FASHION_TEXT = {
 };
 
 const PREFER_COLOR_TEXT = {
-  en: { 0: "None", 1: "Blue", 2: "Pink", 3: "Coral", 4: "Beige", 5: "Brown", 6: "Black", 7: "Purple", 8: "Red", 9: "Yellow", 10: "Orange", 11: "Mint", 12: "Green", 13: "Gray", 14: "White" },
-  ko: { 0: "없음", 1: "블루", 2: "핑크", 3: "코랄", 4: "베이지", 5: "브라운", 6: "블랙", 7: "퍼플", 8: "레드", 9: "옐로우", 10: "오렌지", 11: "민트", 12: "그린", 13: "그레이", 14: "화이트" }
+  en: {
+    0: "None",
+    1: "Beige",
+    2: "Black",
+    3: "Blue",
+    4: "Brown",
+    5: "Coral",
+    6: "Gray",
+    7: "Green",
+    8: "Mint",
+    9: "Orange",
+    10: "Pink"
+  },
+  ko: {
+    0: "없음",
+    1: "베이지",
+    2: "블랙",
+    3: "블루",
+    4: "브라운",
+    5: "코랄",
+    6: "그레이",
+    7: "그린",
+    8: "민트",
+    9: "오렌지",
+    10: "핑크"
+  }
 };
+
 
 const CATEGORY_TEXT = {
   en: { 0: "None", 1: "Aquatic", 2: "Aromatic", 3: "Casual", 4: "Citrus", 5: "Floral", 6: "Fougère", 7: "Fruity", 8: "Green", 9: "Light Floral", 10: "Musk", 11: "Spicy", 12: "Woody" },
@@ -263,31 +288,31 @@ const SCENT_SLUG_BY_ID = {
 
 const COLORS_BY_ID = {
   // 1 Sandalwood — 따뜻한 우디/앰버
-  1:  { overlapGroup: "#5a3b15", overlap: "#e0a458" },
+  1: { overlapGroup: "#5a3b15", overlap: "#e0a458" },
 
   // 2 Bergamot Citrus — 선명한 오렌지/시트러스
-  2:  { overlapGroup: "#b45309", overlap: "#f59e0b" },
+  2: { overlapGroup: "#b45309", overlap: "#f59e0b" },
 
   // 3 Musk Base — 소프트 그레이(비누/스킨센트)
-  3:  { overlapGroup: "#9ca3af", overlap: "#e5e7eb" },
+  3: { overlapGroup: "#9ca3af", overlap: "#e5e7eb" },
 
   // 4 Wind, Waves, Driftwood Surf! — 딥 블루/아쿠아
-  4:  { overlapGroup: "#075985", overlap: "#22d3ee" },
+  4: { overlapGroup: "#075985", overlap: "#22d3ee" },
 
   // 5 Halla Mountain — 포레스트 그린 + 안개 낀 연그린
-  5:  { overlapGroup: "#166534", overlap: "#a7f3d0" },
+  5: { overlapGroup: "#166534", overlap: "#a7f3d0" },
 
   // 6 Lazy Sunday Morning — 라이트 스톤/린넨
-  6:  { overlapGroup: "#a8a29e", overlap: "#f5f5f4" },
+  6: { overlapGroup: "#a8a29e", overlap: "#f5f5f4" },
 
   // 7 Narcissus — 라이트 플로럴(소프트 엠버)
-  7:  { overlapGroup: "#a16207", overlap: "#fde68a" },
+  7: { overlapGroup: "#a16207", overlap: "#fde68a" },
 
   // 8 La Tulipe — 뮤트 로즈 + 핑크
-  8:  { overlapGroup: "#9d174d", overlap: "#f9a8d4" },
+  8: { overlapGroup: "#9d174d", overlap: "#f9a8d4" },
 
   // 9 Black Raspberry & Vanilla — 다크 베리 + 바이올렛 악센트
-  9:  { overlapGroup: "#1f2937", overlap: "#a855f7" },
+  9: { overlapGroup: "#1f2937", overlap: "#a855f7" },
 
   // 10 Herb Base — 허브 그린
   10: { overlapGroup: "#065f46", overlap: "#34d399" },
@@ -301,7 +326,6 @@ const COLORS_BY_ID = {
 
 
 
-
 const getLangFromURL = () => {
   try {
     const u = new URL(window.location.href);
@@ -310,75 +334,9 @@ const getLangFromURL = () => {
   } catch { return null; }
 };
 
-// const KOR = {
-//   gender: { female: "여자", male: "남자", unspecified: "미지정" },
-//   age: { "10s": "10대", "20s": "20대", "30s": "30대", "40s": "40대", "50s": "50대", "60s": "60대" },
-//   color: { red: "빨간색", orange: "주황색", yellow: "노란색", green: "초록색", blue: "파란색", navy: "남색", purple: "보라색" },
-//   style: { fresh: "시원함", sweet: "달콤함", romantic: "로맨틱", sensual: "관능적", urban: "도시적", cool: "시원함" },
-// };
+
 
 export default function PerfumeResult() {
-  // const data = useMemo(
-  //   () => [
-  //     {
-  //       subTitle: "Lemonula",
-  //       hash: { ko: ["에너지", "상큼함"], en: ["Energy", "Fresh"] },
-  //       topNote: "Lemon", middleNote: "Rose", baseNote: "Amber",
-  //       image: lemonula,
-  //       colors: { overlapGroup: "#b28a00", overlap: "#e6c74c" }
-  //     },
-  //     {
-  //       subTitle: "Flolarin",
-  //       hash: { ko: ["달콤함", "상큼함"], en: ["Sweet", "Fresh"] },
-  //       topNote: "Cucumber", middleNote: "Lavender", baseNote: "Cedarwood",
-  //       image: flolarin,
-  //       colors: { overlapGroup: "#b8721d", overlap: "#f7d08a" }
-  //     },
-  //     {
-  //       subTitle: "Essentria",
-  //       hash: { ko: ["플로럴", "로맨틱"], en: ["Floral", "Romantic"] },
-  //       topNote: "Raspberry", middleNote: "Rose", baseNote: "Musk",
-  //       image: essentria,
-  //       colors: { overlapGroup: "#7c3fa6", overlap: "#d6b3f7" }
-  //     },
-  //     {
-  //       subTitle: "Lumina",
-  //       hash: { ko: ["신비적", "세련된"], en: ["Mystic", "Elegant"] },
-  //       topNote: "Bergamot", middleNote: "Jasmine", baseNote: "Amber",
-  //       image: lumina,
-  //       colors: { overlapGroup: "#145c69", overlap: "#b97a2b" }
-  //     },
-  //     {
-  //       subTitle: "Cool Water",
-  //       hash: { ko: ["시원함", "남성적"], en: ["Cool", "Masculine"] },
-  //       topNote: "Bergamot", middleNote: "Geranium", baseNote: "Vetiver",
-  //       image: coolwater,
-  //       colors: { overlapGroup: "#1a3a6b", overlap: "#4a7dc7" }
-  //     },
-  //     {
-  //       subTitle: "Maruit",
-  //       hash: { ko: ["도시적", "청량감"], en: ["Urban", "Refreshing"] },
-  //       topNote: "Mint", middleNote: "Lavender", baseNote: "Sandalwood",
-  //       image: maruit,
-  //       colors: { overlapGroup: "#23446d", overlap: "#6bb0d6" }
-  //     },
-  //     {
-  //       subTitle: "Nectarua",
-  //       hash: { ko: ["관능적", "시원함"], en: ["Sensual", "Cool"] },
-  //       topNote: "Mandarin", middleNote: "Rose", baseNote: "Amber",
-  //       image: nectarua,
-  //       colors: { overlapGroup: "#a86e1a", overlap: "#ffd07b" }
-  //     },
-  //     {
-  //       subTitle: "Croloys",
-  //       hash: { ko: ["관능적", "시원함"], en: ["Sensual", "Cool"] },
-  //       topNote: "Marine", middleNote: "Sage", baseNote: "Musk",
-  //       image: croloys,
-  //       colors: { overlapGroup: "#132f5a", overlap: "#3559A6" }
-  //     },
-  //   ],
-  //   []
-  // );
 
   const data = useMemo(() => {
     const N = 12; // 카드 개수
@@ -462,11 +420,11 @@ export default function PerfumeResult() {
   const item = data[perfume - 1];
 
   const vScent = useMemo(() => {
-   const famRaw = SCENT_CARD_BY_ID[perfume]?.family ?? ""; // 예: "Fougère" / "Floral"
-   const slug = toFamilySlug(famRaw);                      // → "fougere" / "floral"
-   const map = FAMILY_DISPLAY[lang] ?? FAMILY_DISPLAY.en;
-   return map[slug] ?? famRaw; // 언어 맵에 없으면 원문 그대로
- }, [perfume, lang]);
+    const famRaw = SCENT_CARD_BY_ID[perfume]?.family ?? ""; // 예: "Fougère" / "Floral"
+    const slug = toFamilySlug(famRaw);                      // → "fougere" / "floral"
+    const map = FAMILY_DISPLAY[lang] ?? FAMILY_DISPLAY.en;
+    return map[slug] ?? famRaw; // 언어 맵에 없으면 원문 그대로
+  }, [perfume, lang]);
 
   const [showTitle, setShowTitle] = useState(false);
   const [showImage, setShowImage] = useState(false);
@@ -539,16 +497,22 @@ export default function PerfumeResult() {
 
   // --- Gender: 문자열(female/male/unspecified) 또는 코드(gender_id=1/2) 모두 지원
   const vGender = (() => {
-    if (params.gender != null) return valueMaps.gender[params.gender] ?? params.gender;
     const gid = Number(params.gender_id);
-    if (!Number.isNaN(gid)) return (lang === 'ko' ? GENDER_TEXT_KO : GENDER_TEXT_EN)[gid] ?? '';
+    if (!Number.isNaN(gid) && gid !== 0) {
+      return (lang === 'ko' ? GENDER_TEXT_KO : GENDER_TEXT_EN)[gid] ?? '';
+    }
+    if (params.gender) return valueMaps.gender[params.gender] ?? params.gender;
     return '';
   })();
 
   // --- Age: 문자열(20s 등) 또는 코드(age_id) 지원 → 언어별 표기로 변환
   const vAge = (() => {
-    let grp = params.age;
-    if (!grp && params.age_id != null) grp = AGE_GROUP_FROM_ID[Number(params.age_id)];
+    const aid = Number(params.age_id);
+    if (!Number.isNaN(aid) && aid !== 0) {
+      const grp = AGE_GROUP_FROM_ID[aid];
+      return valueMaps.age[grp] ?? grp ?? '';
+    }
+    const grp = params.age;
     return valueMaps.age[grp] ?? grp ?? '';
   })();
 
@@ -724,7 +688,7 @@ export default function PerfumeResult() {
         <div className="overlap-group">
           <div className="overlap" style={{ backgroundColor: item.colors.overlap }}>
             {/* 타이틀/이미지 */}
-            <div className={`div appear ${showTitle ? "in" : ""}` }>
+            <div className={`div appear ${showTitle ? "in" : ""}`}>
               <div className="overlap-2">
                 <div className="sub-title">{item.subTitle}</div>
                 <div className="title">{dict.title}</div>
