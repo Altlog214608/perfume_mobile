@@ -8,7 +8,7 @@ html, body {
 }
 
 .result-root {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: stretch;
   justify-content: center;
