@@ -724,11 +724,10 @@ export default function PerfumeResult() {
         <div className="overlap-group">
           <div className="overlap" style={{ backgroundColor: item.colors.overlap }}>
             {/* 타이틀/이미지 */}
-            <div className={`div appear ${showTitle ? "in" : ""}`}>
+            <div className={`div appear ${showTitle ? "in" : ""}` }>
               <div className="overlap-2">
                 <div className="sub-title">{item.subTitle}</div>
                 <div className="title">{dict.title}</div>
-
                 {/* 공유 아이콘 (기존) */}
                 <button className="icon-chip" aria-label="공유하기" onClick={shareStoryViaWebShare}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -773,7 +772,8 @@ export default function PerfumeResult() {
                 </button>
 
                 <img className={`image pop-in ${showImage ? "in" : ""}`} src={item.image} alt={item.subTitle} />
-                
+                <div className="image-dim" style={{ "--dim": 0.30 }} />  {/* 투명도 0~1 */}
+
                 <p className="hash">#{item.hash[lang][0]}</p>
                 <p className="p">#{item.hash[lang][1]}</p>
               </div>
