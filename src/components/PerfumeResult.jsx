@@ -294,8 +294,23 @@ export default function PerfumeResult() {
                 <div className="sub-title">{item.subTitle}</div>
                 <div className="title">{item.title}</div>
 
+                {/* 공유 버튼
+                <img
+                  className="img"
+                  src="https://c.animaapp.com/AUxvzaXH/img/share.svg"
+                  alt="공유하기"
+                  onClick={() => {
+                    if (navigator.share) {
+                      shareNative();    // 모바일/지원 브라우저: 곧바로 네이티브 공유 시트
+                    } else {
+                      openShare();      // PC 등: 바텀시트 열기
+                    }
+                  }}
+                />
+                <button className="download-btn" onClick={downloadCurrentImage}>⬇︎ 저장</button> */}
+
                 {/* 공유 아이콘 (기존) */}
-                <button className="icon-chip" aria-label="공유하기" onClick={openShare}>
+                <button className="icon-chip" aria-label="공유하기" onClick={shareStoryViaWebShare}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     {/* share (Share-2 스타일) */}
@@ -354,7 +369,7 @@ export default function PerfumeResult() {
       </div>
 
       {/* 공유 바텀시트 */}
-      <div className={`share-backdrop ${shareOpen ? "open" : ""}`} onClick={shareStoryViaWebShare} />
+      {/* <div className={`share-backdrop ${shareOpen ? "open" : ""}`} onClick={closeShare} />
       <div className={`share-sheet ${shareOpen ? "open" : ""}`} role="dialog" aria-modal="true">
         <div className="handle" />
         <h4>공유하기</h4>
@@ -383,7 +398,7 @@ export default function PerfumeResult() {
         <div className="share-footer">
           <button className="share-cancel" onClick={closeShare}>닫기</button>
         </div>
-      </div>
+      </div> */}
 
       {/* 스토리 딥링크 시트 */}
       {/* 인스타 스토리 열기 시트 */}
