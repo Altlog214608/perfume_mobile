@@ -342,13 +342,15 @@ export default function PerfumeResult() {
             <div
               className="details-card"
               style={{
-                background: panelBg,                      // item.colors.overlapGroup (불투명)
-                border: `1px solid ${panelLine}`,         // item.colors.overlap (살짝 진한 라인)
+                background: panelBg,
+                border: `1px solid ${panelLine}`,
                 borderRadius: 18,
                 boxShadow: "0 6px 14px rgba(0,0,0,.14)",
                 padding: "16px",
                 width: "calc(100% - 32px)",
-                margin: "12px auto 24px"
+                margin: "12px auto 0",                                    // 기본
+                marginTop: "auto",                                         // ↓ 남는 공간을 위로 밀어 하단 정렬
+                marginBottom: "calc(16px + 44px + env(safe-area-inset-bottom))" // CTA와 겹침 방지
               }}
             >
               <DetailRow label="성별" value={korGender} visible={visibleRows.includes("gender")} chipBg={chipBg} chipText={chipText} />

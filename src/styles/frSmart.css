@@ -1,5 +1,6 @@
 /* ========== 기본 ========== */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -19,19 +20,26 @@ html, body {
 .element .overlap-group-wrapper {
   position: relative;
   margin: 0 auto;
-  width: 320px;          /* 기본 카드 폭 */
-  height: auto;          /* 내용에 맞게 */
+  width: 320px;
+  /* 기본 카드 폭 */
+  height: auto;
+  /* 내용에 맞게 */
 }
 
-.element .overlap-group { height: 100%; }
+.element .overlap-group {
+  height: 100%;
+}
 
 /* 배경(연노랑) 레이어가 내용만큼만 보이도록 */
 .element .overlap {
-  position: relative;    /* ✅ absolute 제거 */
+  position: relative;
+  /* ✅ absolute 제거 */
   width: 100%;
-  height: auto;          /* ✅ 내용 높이 */
-  left: 0;
-  top: 0;
+  min-height: 100dvh;
+  /* 화면 끝까지 주황 배경 */
+  display: flex;
+  /* 세로 플렉스 */
+  flex-direction: column;
   background-size: cover;
 }
 
@@ -65,24 +73,25 @@ html, body {
   height: 22px;
   top: 10px;
   right: 10px;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,.25));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .25));
   z-index: 11;
 }
 
 .download-btn {
   position: absolute;
-  top: 40px;                  /* 공유 아이콘 바로 아래 */
+  top: 40px;
+  /* 공유 아이콘 바로 아래 */
   right: 8px;
   z-index: 11;
   height: 28px;
   padding: 0 10px;
   border-radius: 999px;
-  border: 1px solid rgba(0,0,0,.08);
-  background: rgba(255,255,255,.9);
+  border: 1px solid rgba(0, 0, 0, .08);
+  background: rgba(255, 255, 255, .9);
   color: #0f1c2f;
   font-size: 12px;
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
 }
 
 /* ========== 파라미터 카드(단일) ========== */
@@ -92,11 +101,13 @@ html, body {
   margin: 12px auto 24px;
   padding: 16px;
   border-radius: 18px;
-  box-shadow: 0 6px 14px rgba(0,0,0,.14);
-  overflow: hidden;     /* 라운드 경계 깨끗하게 */
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .14);
+  overflow: hidden;
+  /* 라운드 경계 깨끗하게 */
 
-   /* ↓ 추가 */
-  margin-top: auto;  /* 화면이 남으면 아래로 밀착 */
+  /* ↓ 추가 */
+  margin-top: auto;
+  /* 화면이 남으면 아래로 밀착 */
   /* 하단 고정 CTA(44px) + 간격(16px) + 안전영역만큼 띄워서 겹침 방지 */
   margin-bottom: calc(8px + 44px + env(safe-area-inset-bottom));
 }
@@ -113,8 +124,8 @@ html, body {
   font-family: "NanumSquare-Bold", Helvetica;
   font-size: 13px;
   color: #0f1c2f;
-  background: rgba(255,255,255,.98);
-  border: 1px solid rgba(255,255,255,.75);
+  background: rgba(255, 255, 255, .98);
+  border: 1px solid rgba(255, 255, 255, .75);
   border-radius: 999px;
   padding: 6px 10px;
   text-align: center;
@@ -122,7 +133,8 @@ html, body {
 
 .detail-value {
   font-size: 14px;
-  color: #FFFFFF;  /* 카드 위에서 잘 보이게 */
+  color: #FFFFFF;
+  /* 카드 위에서 잘 보이게 */
 }
 
 /* ========== 노트바 ========== */
@@ -131,16 +143,20 @@ html, body {
   width: 100%;
   height: 16px;
   border-radius: 999px;
-  background: rgba(255,255,255,.22); /* 트랙 */
+  background: rgba(255, 255, 255, .22);
+  /* 트랙 */
   overflow: hidden;
 }
 
 .note-fill {
   position: absolute;
-  left: 0; top: 0; bottom: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
   width: 0%;
-  background: rgba(255,255,255,.92); /* 채움 */
-  transition: width .9s cubic-bezier(.22,.61,.36,1);
+  background: rgba(255, 255, 255, .92);
+  /* 채움 */
+  transition: width .9s cubic-bezier(.22, .61, .36, 1);
   z-index: 0;
   will-change: width;
 }
@@ -155,7 +171,7 @@ html, body {
   font-size: 12px;
   font-weight: 700;
   color: #0f1c2f;
-  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .35);
   pointer-events: none;
 }
 
@@ -165,12 +181,13 @@ html, body {
   transform: translateY(10px);
   will-change: transform, opacity;
 }
+
 .appear.in {
   opacity: 1;
   transform: translateY(0);
   transition:
-    opacity .45s cubic-bezier(.22,.61,.36,1),
-    transform .45s cubic-bezier(.22,.61,.36,1);
+    opacity .45s cubic-bezier(.22, .61, .36, 1),
+    transform .45s cubic-bezier(.22, .61, .36, 1);
 }
 
 .pop-in {
@@ -178,12 +195,13 @@ html, body {
   opacity: 0;
   will-change: transform, opacity;
 }
+
 .pop-in.in {
   transform: scale(1);
   opacity: 1;
   transition:
-    transform .42s cubic-bezier(.22,.61,.36,1),
-    opacity .42s cubic-bezier(.22,.61,.36,1);
+    transform .42s cubic-bezier(.22, .61, .36, 1),
+    opacity .42s cubic-bezier(.22, .61, .36, 1);
 }
 
 /* ========== 하단 고정 CTA ========== */
@@ -205,20 +223,24 @@ html, body {
   font-size: 14px;
   text-decoration: none;
   border: 1px solid rgba(16, 38, 92, .2);
-  box-shadow: 0 6px 16px rgba(0,0,0,.15);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .15);
 }
 
 /* ========== 공유 바텀시트 ========== */
 .share-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.4);
+  background: rgba(0, 0, 0, .4);
   opacity: 0;
   pointer-events: none;
   transition: opacity .2s ease;
   z-index: 1000;
 }
-.share-backdrop.open { opacity: 1; pointer-events: auto; }
+
+.share-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
 
 .share-sheet {
   position: fixed;
@@ -229,17 +251,29 @@ html, body {
   background: #fff;
   border-top-left-radius: 18px;
   border-top-right-radius: 18px;
-  box-shadow: 0 -12px 28px rgba(0,0,0,.28);
+  box-shadow: 0 -12px 28px rgba(0, 0, 0, .28);
   padding: 12px 16px max(16px, env(safe-area-inset-bottom));
-  transition: transform .28s cubic-bezier(.22,.61,.36,1);
+  transition: transform .28s cubic-bezier(.22, .61, .36, 1);
   z-index: 1001;
 }
-.share-sheet.open { transform: translate(-50%, 0); }
-.share-sheet .handle {
-  width: 44px; height: 5px; border-radius: 999px;
-  background: rgba(15,28,47,.18); margin: 6px auto 12px;
+
+.share-sheet.open {
+  transform: translate(-50%, 0);
 }
-.share-sheet h4 { margin: 0 0 10px; font-size: 15px; color: #0f1c2f; }
+
+.share-sheet .handle {
+  width: 44px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(15, 28, 47, .18);
+  margin: 6px auto 12px;
+}
+
+.share-sheet h4 {
+  margin: 0 0 10px;
+  font-size: 15px;
+  color: #0f1c2f;
+}
 
 .share-grid {
   display: grid;
@@ -247,27 +281,95 @@ html, body {
   gap: 12px;
   margin-bottom: 10px;
 }
-.share-btn { display: flex; flex-direction: column; align-items: center; gap: 8px; background: transparent; border: 0; cursor: pointer; }
-.share-icon { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; font-size: 26px; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,.12); }
-.share-label { font-size: 12px; color: #223; }
-.icon-kakao { background:#FEE500; color:#000; }
-.icon-x     { background:#111; }
-.icon-copy  { background:#e9eef6; color:#223; }
-.icon-more  { background:#5a6dff; }
 
-.share-footer { display:flex; gap:8px; margin-top:6px; }
-.share-footer button { flex:1; height:40px; border-radius:10px; border:1px solid rgba(0,0,0,.08); background:#f7f8fb; font-weight:700; color:#223; }
-.share-cancel { background:#fff; }
+.share-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.share-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .12);
+}
+
+.share-label {
+  font-size: 12px;
+  color: #223;
+}
+
+.icon-kakao {
+  background: #FEE500;
+  color: #000;
+}
+
+.icon-x {
+  background: #111;
+}
+
+.icon-copy {
+  background: #e9eef6;
+  color: #223;
+}
+
+.icon-more {
+  background: #5a6dff;
+}
+
+.share-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.share-footer button {
+  flex: 1;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, .08);
+  background: #f7f8fb;
+  font-weight: 700;
+  color: #223;
+}
+
+.share-cancel {
+  background: #fff;
+}
 
 /* ========== 기타(개발 텍스트 숨김) ========== */
-.result-root .dev-toolbar, .dev-hint { display: none !important; }
+.result-root .dev-toolbar,
+.dev-hint {
+  display: none !important;
+}
 
 /* ========== 모바일 튜닝 ========== */
 @media (max-width: 767px) {
-  .element .overlap-group-wrapper { width: 100vw; max-width: 480px; }
-  .element .sub-title { font-size: 32px; }
-  .element .title { font-size: 16px; }
-  .element .image { max-width: 180px; }
+  .element .overlap-group-wrapper {
+    width: 100vw;
+    max-width: 480px;
+  }
+
+  .element .sub-title {
+    font-size: 32px;
+  }
+
+  .element .title {
+    font-size: 16px;
+  }
+
+  .element .image {
+    max-width: 180px;
+  }
 }
 
 /* === 갈색 배경 길게 남는 것 제거: 그룹 배경색 사용 금지 === */
@@ -277,46 +379,72 @@ html, body {
 
 /* === 파라미터 라벨(흰색 칩) 폭/여백 키우기 === */
 .detail-row {
-  grid-template-columns: 150px 1fr;   /* 110px → 150px */
+  grid-template-columns: 150px 1fr;
+  /* 110px → 150px */
 }
 
 .detail-label {
-  padding: 2px 14px;                  /* 6x10 → 8x14 */
+  padding: 2px 14px;
+  /* 6x10 → 8x14 */
   margin: 10px;
-  font-size: 14px;                    /* 13 → 14 (가독성 소폭 ↑) */
+  font-size: 14px;
+  /* 13 → 14 (가독성 소폭 ↑) */
 }
 
 /* 노트 바도 살짝 키우면 보기 좋아요 */
 .note-bar {
-  height: 18px;                       /* 16 → 18 */
+  height: 18px;
+  /* 16 → 18 */
 }
-.note-value { font-size: 13px; }      /* 12 → 13 */
+
+.note-value {
+  font-size: 13px;
+}
+
+/* 12 → 13 */
 
 /* 작은 화면(≤360px)에서는 140px로 살짝 줄이기 */
 @media (max-width: 360px) {
-  .detail-row { grid-template-columns: 140px 1fr; }
+  .detail-row {
+    grid-template-columns: 140px 1fr;
+  }
 }
 
-.icon-chip{
-  position:absolute; /* 필요 시 배치 */
-  top:10px; right:10px; /* 공유 버튼 위치 */
-  display:grid; place-items:center;
-  width:36px; height:36px;
-  border-radius:999px;
-  border:1px solid rgba(0,0,0,.08);
-  background:#fff;
-  color:#0f1c2f;
-  box-shadow:0 2px 8px rgba(0,0,0,.12);
+.icon-chip {
+  position: absolute;
+  /* 필요 시 배치 */
+  top: 10px;
+  right: 10px;
+  /* 공유 버튼 위치 */
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, .08);
+  background: #fff;
+  color: #0f1c2f;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
 }
-.icon-chip + .icon-chip{ top:48px; } /* 저장 버튼은 공유 아래로 */
+
+.icon-chip+.icon-chip {
+  top: 48px;
+}
+
+/* 저장 버튼은 공유 아래로 */
 
 
 /* 화면을 꽉 채우는 주황 배경 + 세로 정렬 */
 .element .overlap {
-  position: relative;      /* (기존 유지) */
+  position: relative;
+  /* (기존 유지) */
   width: 100%;
-  min-height: 100dvh;      /* ← 핵심: 모바일에서도 주소창 변화 반영 */
-  display: flex;           /* 플렉스 컨테이너 */
-  flex-direction: column;  /* 위: 타이틀/이미지, 아래: details-card */
-  background-size: cover;  /* (기존 유지) */
+  min-height: 100dvh;
+  /* ← 핵심: 모바일에서도 주소창 변화 반영 */
+  display: flex;
+  /* 플렉스 컨테이너 */
+  flex-direction: column;
+  /* 위: 타이틀/이미지, 아래: details-card */
+  background-size: cover;
+  /* (기존 유지) */
 }
