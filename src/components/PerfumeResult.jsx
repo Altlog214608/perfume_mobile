@@ -294,21 +294,6 @@ export default function PerfumeResult() {
                 <div className="sub-title">{item.subTitle}</div>
                 <div className="title">{item.title}</div>
 
-                {/* 공유 버튼
-                <img
-                  className="img"
-                  src="https://c.animaapp.com/AUxvzaXH/img/share.svg"
-                  alt="공유하기"
-                  onClick={() => {
-                    if (navigator.share) {
-                      shareNative();    // 모바일/지원 브라우저: 곧바로 네이티브 공유 시트
-                    } else {
-                      openShare();      // PC 등: 바텀시트 열기
-                    }
-                  }}
-                />
-                <button className="download-btn" onClick={downloadCurrentImage}>⬇︎ 저장</button> */}
-
                 {/* 공유 아이콘 (기존) */}
                 <button className="icon-chip" aria-label="공유하기" onClick={openShare}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
