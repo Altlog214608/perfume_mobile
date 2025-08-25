@@ -432,7 +432,7 @@ body {
 }
 .icon-chip + .icon-chip + .icon-chip { top: 86px; } /* 세 번째 버튼 */
 /* 저장 버튼은 공유 아래로 */
-
+.icon-chip + .icon-chip + .icon-chip + .icon-chip { top: 126px; } /* 네 번째 버튼 (🌐) */
 
 /* 화면을 꽉 채우는 주황 배경 + 세로 정렬 */
 .element .overlap {
@@ -448,3 +448,4 @@ body {
   background-size: cover;
   /* (기존 유지) */
 }
+
