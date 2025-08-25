@@ -2,16 +2,48 @@ import React, { useEffect, useMemo, useState } from "react";
 import "../styles/frSmart.css";
 import { parseQuery, buildSampleUrl } from "../lib/query";
 
-import lemonula from "../assets/img/lemonula.png";
-import flolarin from "../assets/img/flolarin.png";
-import essentria from "../assets/img/essentria.png";
-import lumina from "../assets/img/lumina.png";
-import coolwater from "../assets/img/coolwater.png";
-import maruit from "../assets/img/maruit.png";
-import nectarua from "../assets/img/nectarua.png";
-import croloys from "../assets/img/croloys.png";
+// import lemonula from "../assets/img/lemonula.png";
+// import flolarin from "../assets/img/flolarin.png";
+// import essentria from "../assets/img/essentria.png";
+// import lumina from "../assets/img/lumina.png";
+// import coolwater from "../assets/img/coolwater.png";
+// import maruit from "../assets/img/maruit.png";
+// import nectarua from "../assets/img/nectarua.png";
+// import croloys from "../assets/img/croloys.png";
+
+
+import img1 from "../assets/img/1.png";
+import img2 from "../assets/img/2.png";
+import img3 from "../assets/img/3.png";
+import img4 from "../assets/img/4.png";
+import img5 from "../assets/img/5.png";
+import img6 from "../assets/img/6.png";
+import img7 from "../assets/img/7.png";
+import img8 from "../assets/img/8.png";
+import img9 from "../assets/img/9.png";
+import img10 from "../assets/img/10.png";
+import img11 from "../assets/img/11.png";
+import img12 from "../assets/img/12.png";
+
 
 import html2canvas from "html2canvas";
+
+
+// 가족(family)별 대표 이미지 (파일명은 그대로 1~12)
+const IMAGE_BY_FAMILY = {
+  woody: img1,
+  citrus: img2,
+  musk: img3,
+  aqua: img4,
+  green: img5,
+  casual: img6,
+  "light-floral": img7,
+  floral: img8,
+  fruity: img9,
+  aromatic: img10,
+  spicy: img11,
+  fougere: img12, // Fougère → slug는 fougere
+};
 
 
 // hex 색상 → rgba 변환
@@ -24,12 +56,77 @@ const hexToRgba = (hex, alpha = 1) => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
+// "Fougère" → "fougere", "플로럴" → "floral" 같은 정규화
+const toFamilySlug = (val) => {
+  if (!val) return "";
+  const base = String(val).trim().toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // 악센트 제거
+  const alias = {
+    woody: "woody", "우디": "woody",
+    citrus: "citrus", "시트러스": "citrus",
+    musk: "musk", "머스크": "musk",
+    aqua: "aqua", "아쿠아": "aqua",
+    green: "green", "그린": "green",
+    casual: "casual", "캐주얼": "casual",
+    "light floral": "light-floral", "light-floral": "light-floral", "라이트 플로럴": "light-floral",
+    floral: "floral", "플로럴": "floral",
+    fruity: "fruity", "프루티": "fruity",
+    aromatic: "aromatic", "아로마틱": "aromatic",
+    spicy: "spicy", "스파이시": "spicy",
+    fougere: "fougere", "푸제르": "fougere",
+  };
+  const key = base.replace(/\s+/g, " ");
+  return alias[key] ?? key.replace(/\s+/g, "-");
+};
+
+// 언어별 패밀리 표시(슬러그 → 라벨)
+const FAMILY_DISPLAY = {
+  en: {
+    woody: "Woody",
+    citrus: "Citrus",
+    musk: "Musk",
+    aqua: "Aqua",
+    green: "Green",
+    casual: "Casual",
+    "light-floral": "Light Floral",
+    floral: "Floral",
+    fruity: "Fruity",
+    aromatic: "Aromatic",
+    spicy: "Spicy",
+    fougere: "Fougère",
+  },
+  ko: {
+    woody: "우디",
+    citrus: "시트러스",
+    musk: "머스크",
+    aqua: "아쿠아",
+    green: "그린",
+    casual: "캐주얼",
+    "light-floral": "라이트 플로럴",
+    floral: "플로럴",
+    fruity: "프루티",
+    aromatic: "아로마틱",
+    spicy: "스파이시",
+    fougere: "푸제르",
+  },
+};
+
+
 // 1) i18n 사전 (컴포넌트 위)
 const DICT = {
   en: {
     labels: {
-      gender: "Gender", age: "Age", color: "Preferred Color", style: "Preferred Style",
-      top: "Top Note", middle: "Middle Note", base: "Base Note"
+      scent: "Scent Fmaily",
+      gender: "Gender",
+      mbti: "MBTI",
+      age: "Age",
+      fashion: "Fashion Style",
+      preferColor: "Preferred Color",
+      purpose: "Purpose",
+      category: "Category",
+      top: "Top Note",
+      middle: "Middle Note",
+      base: "Base Note"
     },
     title: "Best match for you",
     shareHashtags: (name) => `#perfume #${name}`,
@@ -37,25 +134,119 @@ const DICT = {
     valueMaps: {
       gender: { female: "Female", male: "Male", unspecified: "Unspecified" },
       age: { "10s": "10s", "20s": "20s", "30s": "30s", "40s": "40s", "50s": "50s", "60s": "60s" },
-      color: { red: "Red", orange: "Orange", yellow: "Yellow", green: "Green", blue: "Blue", navy: "Navy", purple: "Purple" },
-      style: { fresh: "Fresh", sweet: "Sweet", romantic: "Romantic", sensual: "Sensual", urban: "Urban", cool: "Cool" },
+      // color: { red: "Red", orange: "Orange", yellow: "Yellow", green: "Green", blue: "Blue", navy: "Navy", purple: "Purple" },
+      // style: { fresh: "Fresh", sweet: "Sweet", romantic: "Romantic", sensual: "Sensual", urban: "Urban", cool: "Cool" },
     }
   },
   ko: {
     labels: {
-      gender: "성별", age: "나이", color: "선호하는 색상", style: "선호하는 스타일",
-      top: "탑노트", middle: "미들노트", base: "베이스노트"
+      scent: "향 계열",
+      gender: "성별",
+      mbti: "MBTI",
+      age: "나이",
+      fashion: "패션 스타일",
+      preferColor: "선호 색상",
+      purpose: "사용 목적",
+      category: "향수 카테고리",
+      top: "탑노트",
+      middle: "미들노트",
+      base: "베이스노트"
     },
     title: "당신에게 어울리는",
     shareHashtags: (name) => `#향수추천 #${name}`,
     valueMaps: {
       gender: { female: "여자", male: "남자", unspecified: "미지정" },
       age: { "10s": "10대", "20s": "20대", "30s": "30대", "40s": "40대", "50s": "50대", "60s": "60대" },
-      color: { red: "빨간색", orange: "주황색", yellow: "노란색", green: "초록색", blue: "파란색", navy: "남색", purple: "보라색" },
-      style: { fresh: "시원함", sweet: "달콤함", romantic: "로맨틱", sensual: "관능적", urban: "도시적", cool: "시원함" },
+      // color: { red: "빨간색", orange: "주황색", yellow: "노란색", green: "초록색", blue: "파란색", navy: "남색", purple: "보라색" },
+      // style: { fresh: "시원함", sweet: "달콤함", romantic: "로맨틱", sensual: "관능적", urban: "도시적", cool: "시원함" },
     }
   }
 };
+
+// === Lookup tables (URL 코드 → 표시 텍스트) ===
+const AGE_GROUP_FROM_ID = { 0: "NONE", 1: "10s", 2: "20s", 3: "30s", 4: "40s", 5: "50s", 6: "50s" };
+const GENDER_TEXT_EN = { 0: "None", 1: "Man", 2: "Woman" };
+const GENDER_TEXT_KO = { 0: "None", 1: "남자", 2: "여자" };
+const PERSONALITY_MBTI = { 0: "NONE", 1: "ENFP", 2: "INFP", 3: "ISFP", 4: "ISTJ", 5: "ISFJ" };
+
+const PURPOSE_TEXT = {
+  en: { 0: "None", 1: "Mood Boost", 2: "Good Impression", 3: "Unique Style", 4: "Self Satisfaction", 5: "Date or Social", 6: "Formal Occasion", 7: "Special Event" },
+  ko: { 0: "없음", 1: "기분 전환", 2: "좋은 인상", 3: "유니크 스타일", 4: "자기 만족", 5: "데이트/사교", 6: "포멀한 자리", 7: "특별한 날" }
+};
+const PREF_SCENT_TO_PURPOSE_KEY = {
+  0: "good_impression", 1: "mood_boost", 2: "good_impression", 3: "self_satisfaction", 4: "date_or_social",
+  5: "formal_occasion", 6: "special_event", 7: "unique_style", 8: "mood_boost", 9: "self_satisfaction",
+  10: "formal_occasion", 11: "special_event", 12: "unique_style"
+};
+const PURPOSE_KEY_TO_TEXT = {
+  en: { good_impression: "Good Impression", mood_boost: "Mood Boost", unique_style: "Unique Style", self_satisfaction: "Self Satisfaction", date_or_social: "Date or Social", formal_occasion: "Formal Occasion", special_event: "Special Event" },
+  ko: { good_impression: "좋은 인상", mood_boost: "기분 전환", unique_style: "유니크 스타일", self_satisfaction: "자기 만족", date_or_social: "데이트/사교", formal_occasion: "포멀한 자리", special_event: "특별한 날" }
+};
+
+const FASHION_TEXT = {
+  en: { 0: "None", 1: "Casual", 2: "Chic", 3: "Classic", 4: "Free Style", 5: "Lovely", 6: "Minimal", 7: "Modern", 8: "Romantic", 9: "Simple", 10: "Sports" },
+  ko: { 0: "없음", 1: "캐주얼", 2: "시크", 3: "클래식", 4: "프리스타일", 5: "러블리", 6: "미니멀", 7: "모던", 8: "로맨틱", 9: "심플", 10: "스포츠" }
+};
+
+const PREFER_COLOR_TEXT = {
+  en: { 0: "None", 1: "Blue", 2: "Pink", 3: "Coral", 4: "Beige", 5: "Brown", 6: "Black", 7: "Purple", 8: "Red", 9: "Yellow", 10: "Orange", 11: "Mint", 12: "Green", 13: "Gray", 14: "White" },
+  ko: { 0: "없음", 1: "블루", 2: "핑크", 3: "코랄", 4: "베이지", 5: "브라운", 6: "블랙", 7: "퍼플", 8: "레드", 9: "옐로우", 10: "오렌지", 11: "민트", 12: "그린", 13: "그레이", 14: "화이트" }
+};
+
+const CATEGORY_TEXT = {
+  en: { 0: "None", 1: "Aquatic", 2: "Aromatic", 3: "Casual", 4: "Citrus", 5: "Floral", 6: "Fougère", 7: "Fruity", 8: "Green", 9: "Light Floral", 10: "Musk", 11: "Spicy", 12: "Woody" },
+  ko: { 0: "없음", 1: "아쿠아틱", 2: "아로마틱", 3: "캐주얼", 4: "시트러스", 5: "플로럴", 6: "푸제르", 7: "프루티", 8: "그린", 9: "라이트 플로럴", 10: "머스크", 11: "스파이시", 12: "우디" }
+};
+
+// 번호 → 카드 정보
+const SCENT_CARD_BY_ID = {
+  1: { title: "Sandalwood", family: "Woody" },
+  2: { title: "Bergamot Citrus", family: "Citrus" },
+  3: { title: "Musk Base", family: "Musk" },
+  4: { title: "Wind, Waves, Driftwood Surf!", family: "Aqua" },
+  5: { title: "Halla Mountain", family: "Green" },
+  6: { title: "Lazy Sunday Morning", family: "Casual" },
+  7: { title: "Narcissus", family: "Light Floral" },
+  8: { title: "La Tulipe", family: "Floral" },
+  9: { title: "Black Raspberry & Vanilla", family: "Fruity" },
+  10: { title: "Herb Base", family: "Aromatic" },
+  11: { title: "Accord Oud", family: "Spicy" },
+  12: { title: "Aventus", family: "Fougère" }, // 표시는 악센트 유지
+};
+
+// 번호 → 표시용 슬러그(ASCII 권장)
+const SCENT_SLUG_BY_ID = {
+  1: "sandalwood-woody",
+  2: "bergamot-citrus",
+  3: "musk-base",
+  4: "driftwood-surf-aqua",
+  5: "halla-mountain-green",
+  6: "lazy-sunday-morning-casual",
+  7: "narcissus-light-floral",
+  8: "la-tulipe-floral",
+  9: "black-raspberry-vanilla-fruity",
+  10: "herb-base-aromatic",
+  11: "accord-oud-spicy",
+  12: "aventus-fougere", // 슬러그는 ASCII로
+};
+
+// ✅ 여기부터 새로 추가
+const COLORS_BY_ID = {
+  1: { overlapGroup: "#b28a00", overlap: "#e6c74c" },
+  2: { overlapGroup: "#b8721d", overlap: "#f7d08a" },
+  3: { overlapGroup: "#7c3fa6", overlap: "#d6b3f7" },
+  4: { overlapGroup: "#145c69", overlap: "#b97a2b" },
+  5: { overlapGroup: "#1a3a6b", overlap: "#4a7dc7" },
+  6: { overlapGroup: "#23446d", overlap: "#6bb0d6" },
+  7: { overlapGroup: "#a86e1a", overlap: "#ffd07b" },
+  8: { overlapGroup: "#132f5a", overlap: "#3559A6" },
+  9: { overlapGroup: "#8b3d00", overlap: "#ffb377" },
+  10: { overlapGroup: "#355e5e", overlap: "#9ec5c5" },
+  11: { overlapGroup: "#7a2e2e", overlap: "#f1a899" },
+  12: { overlapGroup: "#2e6b3a", overlap: "#a8d5a2" },
+};
+
+
 
 const getLangFromURL = () => {
   try {
@@ -73,71 +264,102 @@ const getLangFromURL = () => {
 // };
 
 export default function PerfumeResult() {
-  const data = useMemo(
-    () => [
-      {
-        subTitle: "Lemonula",
-        hash: { ko: ["에너지", "상큼함"], en: ["Energy", "Fresh"] },
-        topNote: "Lemon", middleNote: "Rose", baseNote: "Amber",
-        image: lemonula,
-        colors: { overlapGroup: "#b28a00", overlap: "#e6c74c" }
-      },
-      {
-        subTitle: "Flolarin",
-        hash: { ko: ["달콤함", "상큼함"], en: ["Sweet", "Fresh"] },
-        topNote: "Cucumber", middleNote: "Lavender", baseNote: "Cedarwood",
-        image: flolarin,
-        colors: { overlapGroup: "#b8721d", overlap: "#f7d08a" }
-      },
-      {
-        subTitle: "Essentria",
-        hash: { ko: ["플로럴", "로맨틱"], en: ["Floral", "Romantic"] },
-        topNote: "Raspberry", middleNote: "Rose", baseNote: "Musk",
-        image: essentria,
-        colors: { overlapGroup: "#7c3fa6", overlap: "#d6b3f7" }
-      },
-      {
-        subTitle: "Lumina",
-        hash: { ko: ["신비적", "세련된"], en: ["Mystic", "Elegant"] },
-        topNote: "Bergamot", middleNote: "Jasmine", baseNote: "Amber",
-        image: lumina,
-        colors: { overlapGroup: "#145c69", overlap: "#b97a2b" }
-      },
-      {
-        subTitle: "Cool Water",
-        hash: { ko: ["시원함", "남성적"], en: ["Cool", "Masculine"] },
-        topNote: "Bergamot", middleNote: "Geranium", baseNote: "Vetiver",
-        image: coolwater,
-        colors: { overlapGroup: "#1a3a6b", overlap: "#4a7dc7" }
-      },
-      {
-        subTitle: "Maruit",
-        hash: { ko: ["도시적", "청량감"], en: ["Urban", "Refreshing"] },
-        topNote: "Mint", middleNote: "Lavender", baseNote: "Sandalwood",
-        image: maruit,
-        colors: { overlapGroup: "#23446d", overlap: "#6bb0d6" }
-      },
-      {
-        subTitle: "Nectarua",
-        hash: { ko: ["관능적", "시원함"], en: ["Sensual", "Cool"] },
-        topNote: "Mandarin", middleNote: "Rose", baseNote: "Amber",
-        image: nectarua,
-        colors: { overlapGroup: "#a86e1a", overlap: "#ffd07b" }
-      },
-      {
-        subTitle: "Croloys",
-        hash: { ko: ["관능적", "시원함"], en: ["Sensual", "Cool"] },
-        topNote: "Marine", middleNote: "Sage", baseNote: "Musk",
-        image: croloys,
-        colors: { overlapGroup: "#132f5a", overlap: "#3559A6" }
-      },
-    ],
-    []
-  );
+  // const data = useMemo(
+  //   () => [
+  //     {
+  //       subTitle: "Lemonula",
+  //       hash: { ko: ["에너지", "상큼함"], en: ["Energy", "Fresh"] },
+  //       topNote: "Lemon", middleNote: "Rose", baseNote: "Amber",
+  //       image: lemonula,
+  //       colors: { overlapGroup: "#b28a00", overlap: "#e6c74c" }
+  //     },
+  //     {
+  //       subTitle: "Flolarin",
+  //       hash: { ko: ["달콤함", "상큼함"], en: ["Sweet", "Fresh"] },
+  //       topNote: "Cucumber", middleNote: "Lavender", baseNote: "Cedarwood",
+  //       image: flolarin,
+  //       colors: { overlapGroup: "#b8721d", overlap: "#f7d08a" }
+  //     },
+  //     {
+  //       subTitle: "Essentria",
+  //       hash: { ko: ["플로럴", "로맨틱"], en: ["Floral", "Romantic"] },
+  //       topNote: "Raspberry", middleNote: "Rose", baseNote: "Musk",
+  //       image: essentria,
+  //       colors: { overlapGroup: "#7c3fa6", overlap: "#d6b3f7" }
+  //     },
+  //     {
+  //       subTitle: "Lumina",
+  //       hash: { ko: ["신비적", "세련된"], en: ["Mystic", "Elegant"] },
+  //       topNote: "Bergamot", middleNote: "Jasmine", baseNote: "Amber",
+  //       image: lumina,
+  //       colors: { overlapGroup: "#145c69", overlap: "#b97a2b" }
+  //     },
+  //     {
+  //       subTitle: "Cool Water",
+  //       hash: { ko: ["시원함", "남성적"], en: ["Cool", "Masculine"] },
+  //       topNote: "Bergamot", middleNote: "Geranium", baseNote: "Vetiver",
+  //       image: coolwater,
+  //       colors: { overlapGroup: "#1a3a6b", overlap: "#4a7dc7" }
+  //     },
+  //     {
+  //       subTitle: "Maruit",
+  //       hash: { ko: ["도시적", "청량감"], en: ["Urban", "Refreshing"] },
+  //       topNote: "Mint", middleNote: "Lavender", baseNote: "Sandalwood",
+  //       image: maruit,
+  //       colors: { overlapGroup: "#23446d", overlap: "#6bb0d6" }
+  //     },
+  //     {
+  //       subTitle: "Nectarua",
+  //       hash: { ko: ["관능적", "시원함"], en: ["Sensual", "Cool"] },
+  //       topNote: "Mandarin", middleNote: "Rose", baseNote: "Amber",
+  //       image: nectarua,
+  //       colors: { overlapGroup: "#a86e1a", overlap: "#ffd07b" }
+  //     },
+  //     {
+  //       subTitle: "Croloys",
+  //       hash: { ko: ["관능적", "시원함"], en: ["Sensual", "Cool"] },
+  //       topNote: "Marine", middleNote: "Sage", baseNote: "Musk",
+  //       image: croloys,
+  //       colors: { overlapGroup: "#132f5a", overlap: "#3559A6" }
+  //     },
+  //   ],
+  //   []
+  // );
+
+  const data = useMemo(() => {
+    const N = 12; // 카드 개수
+    return Array.from({ length: N }, (_, i) => {
+      const id = i + 1;
+      // SCENT_CARD_BY_ID는 (id→{title, family}) 매핑이라고 가정
+      const card = SCENT_CARD_BY_ID[id] || {};
+      const family = card.family || "";                 // 예: "Fougère" / "플로럴"
+      const familySlug = toFamilySlug(family);          // → "fougere" / "floral"
+      const image = IMAGE_BY_FAMILY[familySlug] || img1;
+
+      return {
+        subTitle: card.title || `Scent ${id}`,
+        hash: { ko: [family, ""], en: [family, ""] },   // 필요하면 해시 사용
+        topNote: "", middleNote: "", baseNote: "",
+        image,
+        // colors는 기존처럼 있으면 쓰고, 없으면 기본값
+        colors: COLORS_BY_ID?.[id] || { overlapGroup: "#333", overlap: "#bbb" },
+      };
+    });
+  }, []);
 
 
   // ...기존 state들...
   const cardRef = React.useRef(null);
+
+  // PerfumeResult.jsx 상단의 state들 근처에 추가
+  const [urlTick, setUrlTick] = useState(0);
+
+  // URL 뒤로가기/앞으로가기(popstate)도 잡아서 갱신
+  useEffect(() => {
+    const onPop = () => setUrlTick(t => t + 1);
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
 
   // 언어 상태
   const [lang, setLang] = useState(getLangFromURL() ?? 'en');
@@ -180,9 +402,16 @@ export default function PerfumeResult() {
 
   const { perfume, params } = useMemo(
     () => parseQuery(window.location.search, data.length),
-    [data.length]
+    [data.length, urlTick]
   );
   const item = data[perfume - 1];
+
+  const vScent = useMemo(() => {
+   const famRaw = SCENT_CARD_BY_ID[perfume]?.family ?? ""; // 예: "Fougère" / "Floral"
+   const slug = toFamilySlug(famRaw);                      // → "fougere" / "floral"
+   const map = FAMILY_DISPLAY[lang] ?? FAMILY_DISPLAY.en;
+   return map[slug] ?? famRaw; // 언어 맵에 없으면 원문 그대로
+ }, [perfume, lang]);
 
   const [showTitle, setShowTitle] = useState(false);
   const [showImage, setShowImage] = useState(false);
@@ -191,18 +420,43 @@ export default function PerfumeResult() {
   const openShare = () => setShareOpen(true);
   const closeShare = () => setShareOpen(false);
 
-  const rowOrder = ["gender", "age", "color", "style", "top", "middle", "base"];
+  const rowOrder = ["scent", "gender", "mbti", "age", "fashion", "preferColor", "purpose", "category", "top", "middle", "base"];
 
   // 렌더 규칙 설정화: 여기에 항목을 추가/제거하면 화면이 바뀜
   const ROWS = [
+    { type: "text", key: "scent", valueFrom: () => vScent },
     { type: "text", key: "gender", valueFrom: () => vGender },
+    { type: "text", key: "mbti", valueFrom: () => vMbti },
     { type: "text", key: "age", valueFrom: () => vAge },
-    { type: "text", key: "color", valueFrom: () => vColor },
-    { type: "text", key: "style", valueFrom: () => vStyle },
+    { type: "text", key: "fashion", valueFrom: () => vFashion },
+    { type: "text", key: "preferColor", valueFrom: () => vPreferColor },
+    { type: "text", key: "purpose", valueFrom: () => vPurpose },
+    { type: "text", key: "category", valueFrom: () => vCategory },
     { type: "note", key: "top", valueFrom: () => Number(params.top) || 0 },
     { type: "note", key: "middle", valueFrom: () => Number(params.middle) || 0 },
     { type: "note", key: "base", valueFrom: () => Number(params.base) || 0 },
   ];
+
+  // 랜덤 정수 [min, max]
+  const rint = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+  // 합이 100이 되는 탑/미들/베이스 (각각 최소 10 보장)
+  const randomNotes100 = () => {
+    let top, middle, base;
+    do {
+      top = rint(10, 70);
+      middle = rint(10, 80 - top);
+      base = 100 - top - middle;
+    } while (base < 10 || base > 80);
+    return { top, middle, base };
+  };
+
+  // MBTI 샘플(원하는대로 더/덜 넣어도 됨)
+  const MBTIS = ["ENFP", "INFP", "ISFP", "ISTJ", "ISFJ", "INTJ", "ENTP", "ENFJ", "INFJ", "INTP", "ISTP", "ESFP", "ESTP", "ESFJ", "ESTJ"];
+
+  // 다음 perfume (1..12 순환)
+  const nextPerfumeId = (cur) => (cur % 12) + 1;
+
 
   useEffect(() => {
     setShowTitle(false);
@@ -220,17 +474,112 @@ export default function PerfumeResult() {
     });
 
     return () => { clearTimeout(t0); clearTimeout(t1); };
-  }, [perfume, params.top, params.middle, params.base]);
+  }, [perfume, params.top, params.middle, params.base, lang]);
 
   // 값 매핑 (언어별)
-  const vGender = valueMaps.gender[params.gender] ?? params.gender;
-  const vAge = valueMaps.age[params.age] ?? params.age;
-  const vColor = valueMaps.color[params.color] ?? params.color;
-  const vStyle = valueMaps.style[params.style] ?? params.style;
+  // const vGender = valueMaps.gender[params.gender] ?? params.gender;
+  // const vAge = valueMaps.age[params.age] ?? params.age;
+  // const vColor = valueMaps.color[params.color] ?? params.color;
+  // const vStyle = valueMaps.style[params.style] ?? params.style;
+
+  // --- Gender: 문자열(female/male/unspecified) 또는 코드(gender_id=1/2) 모두 지원
+  const vGender = (() => {
+    if (params.gender != null) return valueMaps.gender[params.gender] ?? params.gender;
+    const gid = Number(params.gender_id);
+    if (!Number.isNaN(gid)) return (lang === 'ko' ? GENDER_TEXT_KO : GENDER_TEXT_EN)[gid] ?? '';
+    return '';
+  })();
+
+  // --- Age: 문자열(20s 등) 또는 코드(age_id) 지원 → 언어별 표기로 변환
+  const vAge = (() => {
+    let grp = params.age;
+    if (!grp && params.age_id != null) grp = AGE_GROUP_FROM_ID[Number(params.age_id)];
+    return valueMaps.age[grp] ?? grp ?? '';
+  })();
+
+  // --- MBTI: 문자열(mbti) 또는 코드(personality) 지원
+  const vMbti = (() => {
+    const raw = params.mbti ?? PERSONALITY_MBTI[Number(params.personality)];
+    return (raw ? String(raw).toUpperCase() : '');
+  })();
+
+  // --- Fashion Style: 문자열(fashion) 또는 코드(fashion_id)
+  const vFashion = (() => {
+    const table = FASHION_TEXT[lang === 'ko' ? 'ko' : 'en'];
+    if (params.fashion != null) {
+      const s = String(params.fashion).toLowerCase();
+      // 문자열이 오면 첫 글자만 대문자(or ko 그대로)
+      const rev = Object.entries(table).find(([, v]) => v.toLowerCase?.() === s);
+      return rev ? rev[1] : params.fashion;
+    }
+    const fid = Number(params.fashion_id);
+    if (!Number.isNaN(fid)) return table[fid] ?? '';
+    return '';
+  })();
+
+  // --- Preferred Color: 문자열(pref_color) 또는 코드(pref_color_id)
+  const vPreferColor = (() => {
+    const table = PREFER_COLOR_TEXT[lang === 'ko' ? 'ko' : 'en'];
+    if (params.pref_color != null) {
+      const key = String(params.pref_color).toLowerCase();
+      const rev = Object.entries(table).find(([, v]) => v.toLowerCase?.() === key);
+      return rev ? rev[1] : params.pref_color;
+    }
+    const cid = Number(params.pref_color_id);
+    if (!Number.isNaN(cid)) return table[cid] ?? '';
+    return '';
+  })();
+
+  // --- Purpose: 코드(purpose_id) 또는 키(purpose) 또는 선호향코드(pref_scent)
+  const vPurpose = (() => {
+    const t = PURPOSE_TEXT[lang === 'ko' ? 'ko' : 'en'];
+    if (params.purpose_id != null) return t[Number(params.purpose_id)] ?? '';
+    if (params.purpose != null) return PURPOSE_KEY_TO_TEXT[lang === 'ko' ? 'ko' : 'en'][String(params.purpose)] ?? String(params.purpose);
+    if (params.pref_scent != null) {
+      const key = PREF_SCENT_TO_PURPOSE_KEY[Number(params.pref_scent)];
+      return PURPOSE_KEY_TO_TEXT[lang === 'ko' ? 'ko' : 'en'][key] ?? '';
+    }
+    return '';
+  })();
+
+  // --- Category: 문자열(category) 또는 코드(category_id)
+  const vCategory = (() => {
+    const table = CATEGORY_TEXT[lang === 'ko' ? 'ko' : 'en'];
+    if (params.category != null) {
+      const key = String(params.category).toLowerCase();
+      const rev = Object.entries(table).find(([, v]) => v.toLowerCase?.() === key);
+      return rev ? rev[1] : params.category;
+    }
+    const cid = Number(params.category_id);
+    if (!Number.isNaN(cid)) return table[cid] ?? '';
+    return '';
+  })();
 
 
   const sampleUrl = useMemo(() => buildSampleUrl(), []);
 
+  const handleSampleClick = (e) => {
+    e.preventDefault();
+    const nextId = nextPerfumeId(perfume);
+    const { top, middle, base } = randomNotes100();
+
+    const url = buildSampleUrl({
+      path: "/result",
+      lang,               // 현재 언어 유지
+      perfume: nextId,    // ★ 1→12 순환
+      gender_id: rint(1, 2),
+      age_id: rint(1, 6),
+      mbti: MBTIS[rint(0, MBTIS.length - 1)],
+      fashion_id: rint(1, 10),
+      pref_color_id: rint(1, 14),
+      purpose_id: rint(1, 7),
+      category_id: rint(1, 12),
+      top, middle, base,  // 합 100
+    });
+
+    window.history.pushState({}, "", url); // 새로고침 없이 URL만 변경
+    setUrlTick(t => t + 1);                // parseQuery 재실행 유도
+  };
 
 
   // Kakao SDK 초기화
@@ -275,7 +624,7 @@ export default function PerfumeResult() {
       const shareData = {
         files: [file],
         title: `${item.subTitle} 추천 향수`,
-        text: `${item.subTitle} - ${item.title}`,
+        text: `${item.subTitle} - ${dict.title}`,
       };
       if (navigator.canShare && navigator.canShare(shareData)) {
         await navigator.share(shareData);   // ▶︎ 공유 시트 열림 (인스타 선택 가능)
@@ -290,8 +639,6 @@ export default function PerfumeResult() {
       closeShare?.();
     }
   };
-
-
 
 
   const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -366,9 +713,9 @@ export default function PerfumeResult() {
                 </button>
 
                 {/* 예시 값 버튼 (임시) */}
-                <a className="icon-chip" aria-label="예시 값 입력" href={sampleUrl}>
+                <button className="icon-chip" aria-label="예시 값 입력" onClick={handleSampleClick}>
                   <span role="img" aria-label="sparkles">✨</span>
-                </a>
+                </button>
 
                 {/* 언어 토글 (EN/KR) */}
                 <button
