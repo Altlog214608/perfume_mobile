@@ -332,6 +332,11 @@ export default function PerfumeResult() {
                   </svg>
                 </button>
 
+                {/* 예시 값 버튼 (임시) */}
+                <a className="icon-chip" aria-label="예시 값 입력" href={sampleUrl}>
+                  <span role="img" aria-label="sparkles">✨</span>
+                </a>
+
                 <img className={`image pop-in ${showImage ? "in" : ""}`} src={item.image} alt={item.subTitle} />
                 <p className="hash">#{item.hash}</p>
                 <p className="p">#{item.hash1}</p>
@@ -350,7 +355,7 @@ export default function PerfumeResult() {
                 width: "calc(100% - 32px)",
                 margin: "12px auto 0",                                    // 기본
                 marginTop: "auto",                                         // ↓ 남는 공간을 위로 밀어 하단 정렬
-                marginBottom: "calc(16px + 44px + env(safe-area-inset-bottom))" // CTA와 겹침 방지
+                // marginBottom: "calc(16px + 44px + env(safe-area-inset-bottom))" // CTA와 겹침 방지
               }}
             >
               <DetailRow label="성별" value={korGender} visible={visibleRows.includes("gender")} chipBg={chipBg} chipText={chipText} />
@@ -447,7 +452,7 @@ export default function PerfumeResult() {
         </div>
       </div>
 
-      <a className="floating-cta" href={sampleUrl}>예시 값으로 채우기(이동)</a>
+      {/* <a className="floating-cta" href={sampleUrl}>예시 값으로 채우기(이동)</a> */}
     </div>
   );
 }

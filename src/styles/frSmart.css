@@ -430,7 +430,7 @@ body {
 .icon-chip+.icon-chip {
   top: 48px;
 }
-
+.icon-chip + .icon-chip + .icon-chip { top: 86px; } /* 세 번째 버튼 */
 /* 저장 버튼은 공유 아래로 */
 
 
