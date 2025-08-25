@@ -94,6 +94,11 @@ html, body {
   border-radius: 18px;
   box-shadow: 0 6px 14px rgba(0,0,0,.14);
   overflow: hidden;     /* 라운드 경계 깨끗하게 */
+
+   /* ↓ 추가 */
+  margin-top: auto;  /* 화면이 남으면 아래로 밀착 */
+  /* 하단 고정 CTA(44px) + 간격(16px) + 안전영역만큼 띄워서 겹침 방지 */
+  margin-bottom: calc(8px + 44px + env(safe-area-inset-bottom));
 }
 
 /* 행 그리드 */
@@ -304,3 +309,14 @@ html, body {
   box-shadow:0 2px 8px rgba(0,0,0,.12);
 }
 .icon-chip + .icon-chip{ top:48px; } /* 저장 버튼은 공유 아래로 */
+
+
+/* 화면을 꽉 채우는 주황 배경 + 세로 정렬 */
+.element .overlap {
+  position: relative;      /* (기존 유지) */
+  width: 100%;
+  min-height: 100dvh;      /* ← 핵심: 모바일에서도 주소창 변화 반영 */
+  display: flex;           /* 플렉스 컨테이너 */
+  flex-direction: column;  /* 위: 타이틀/이미지, 아래: details-card */
+  background-size: cover;  /* (기존 유지) */
+}
