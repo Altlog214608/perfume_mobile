@@ -111,12 +111,43 @@ const FAMILY_DISPLAY = {
   },
 };
 
+// PerfumeResult.jsx 의 룩업 상수들 근처(예: FAMILY_DISPLAY 아래)에 추가
+const HASH_BY_ID = {
+  1:  { ko: ["따뜻함", "안정감"],     en: ["Warm", "Grounding"] },
+  2:  { ko: ["상큼함", "활력"],       en: ["Zesty", "Energizing"] },
+  3:  { ko: ["포근함", "비누향"],     en: ["Cozy", "Clean"] },
+  4:  { ko: ["청량함", "시원함"],     en: ["Refreshing", "Cool"] },
+  5:  { ko: ["풀내음", "산뜻함"],     en: ["Leafy", "Fresh"] },
+  6:  { ko: ["깔끔함", "데일리"],     en: ["Clean", "Everyday"] },
+  7:  { ko: ["청초함", "은은함"],     en: ["Delicate", "Airy"] },
+  8:  { ko: ["로맨틱", "우아함"],     en: ["Romantic", "Elegant"] },
+  9:  { ko: ["달콤함", "발랄함"],     en: ["Sweet", "Playful"] },
+  10: { ko: ["상쾌함", "편안함"],     en: ["Refreshing", "Calming"] },
+  11: { ko: ["관능적", "대담함"],     en: ["Sensual", "Bold"] },
+  12: { ko: ["세련됨", "남성적"],     en: ["Refined", "Masculine"] },
+};
+
+// 번호별 해시태그(캐주얼 톤) — 값에는 # 미포함!
+const HASH_BY_ID_casur = {
+  1:  { ko: ["포근무드", "우디감성"],       en: ["CozyVibes", "WoodyVibes"] },
+  2:  { ko: ["상큼무드", "비타민향"],       en: ["ZestyVibes", "CitrusPop"] },
+  3:  { ko: ["스킨센트", "비누향무드"],     en: ["SkinScent", "CleanVibes"] },
+  4:  { ko: ["청량무드", "바다향"],         en: ["SeaBreeze", "CoolVibes"] },
+  5:  { ko: ["초록무드", "허브감성"],       en: ["GreenVibes", "HerbalFresh"] },
+  6:  { ko: ["데일리향", "클린코튼"],       en: ["EverydayScent", "CleanCotton"] },
+  7:  { ko: ["청초무드", "은은플로럴"],     en: ["SoftFloral", "AiryVibes"] },
+  8:  { ko: ["로맨틱무드", "우아한플로럴"], en: ["RomanticVibes", "ElegantFloral"] },
+  9:  { ko: ["달달무드", "상큼달콤"],       en: ["SweetVibes", "FruityFun"] },
+  10: { ko: ["상쾌무드", "허브테라피"],     en: ["FreshHerbal", "CalmVibes"] },
+  11: { ko: ["관능무드", "스파이시무드"],   en: ["SensualVibes", "SpicyEdge"] },
+  12: { ko: ["바버샵무드", "클래식무드"],   en: ["BarbershopVibes", "ClassicVibes"] },
+};
 
 // 1) i18n 사전 (컴포넌트 위)
 const DICT = {
   en: {
     labels: {
-      scent: "Scent Fmaily",
+      scent: "Scent Family",
       gender: "Gender",
       mbti: "MBTI",
       age: "Age",
@@ -230,21 +261,44 @@ const SCENT_SLUG_BY_ID = {
   12: "aventus-fougere", // 슬러그는 ASCII로
 };
 
-// ✅ 여기부터 새로 추가
 const COLORS_BY_ID = {
-  1: { overlapGroup: "#b28a00", overlap: "#e6c74c" },
-  2: { overlapGroup: "#b8721d", overlap: "#f7d08a" },
-  3: { overlapGroup: "#7c3fa6", overlap: "#d6b3f7" },
-  4: { overlapGroup: "#145c69", overlap: "#b97a2b" },
-  5: { overlapGroup: "#1a3a6b", overlap: "#4a7dc7" },
-  6: { overlapGroup: "#23446d", overlap: "#6bb0d6" },
-  7: { overlapGroup: "#a86e1a", overlap: "#ffd07b" },
-  8: { overlapGroup: "#132f5a", overlap: "#3559A6" },
-  9: { overlapGroup: "#8b3d00", overlap: "#ffb377" },
-  10: { overlapGroup: "#355e5e", overlap: "#9ec5c5" },
-  11: { overlapGroup: "#7a2e2e", overlap: "#f1a899" },
-  12: { overlapGroup: "#2e6b3a", overlap: "#a8d5a2" },
+  // 1 Sandalwood — 따뜻한 우디/앰버
+  1:  { overlapGroup: "#5a3b15", overlap: "#e0a458" },
+
+  // 2 Bergamot Citrus — 선명한 오렌지/시트러스
+  2:  { overlapGroup: "#b45309", overlap: "#f59e0b" },
+
+  // 3 Musk Base — 소프트 그레이(비누/스킨센트)
+  3:  { overlapGroup: "#9ca3af", overlap: "#e5e7eb" },
+
+  // 4 Wind, Waves, Driftwood Surf! — 딥 블루/아쿠아
+  4:  { overlapGroup: "#075985", overlap: "#22d3ee" },
+
+  // 5 Halla Mountain — 포레스트 그린 + 안개 낀 연그린
+  5:  { overlapGroup: "#166534", overlap: "#a7f3d0" },
+
+  // 6 Lazy Sunday Morning — 라이트 스톤/린넨
+  6:  { overlapGroup: "#a8a29e", overlap: "#f5f5f4" },
+
+  // 7 Narcissus — 라이트 플로럴(소프트 엠버)
+  7:  { overlapGroup: "#a16207", overlap: "#fde68a" },
+
+  // 8 La Tulipe — 뮤트 로즈 + 핑크
+  8:  { overlapGroup: "#9d174d", overlap: "#f9a8d4" },
+
+  // 9 Black Raspberry & Vanilla — 다크 베리 + 바이올렛 악센트
+  9:  { overlapGroup: "#1f2937", overlap: "#a855f7" },
+
+  // 10 Herb Base — 허브 그린
+  10: { overlapGroup: "#065f46", overlap: "#34d399" },
+
+  // 11 Accord Oud — 스모키 다크 + 앰버(잿불)  ← 직전에 맞춘 값 유지
+  11: { overlapGroup: "#1c1917", overlap: "#d97706" },
+
+  // 12 Aventus — 차콜 그레이 + 소프트 실버  ← 직전에 맞춘 값 유지
+  12: { overlapGroup: "#374151", overlap: "#d1d5db" },
 };
+
 
 
 
@@ -338,7 +392,8 @@ export default function PerfumeResult() {
 
       return {
         subTitle: card.title || `Scent ${id}`,
-        hash: { ko: [family, ""], en: [family, ""] },   // 필요하면 해시 사용
+        // hash: HASH_BY_ID[id] || { ko: ["은은함", "산뜻함"], en: ["Soft", "Fresh"] },   // 필요하면 해시 사용
+        hash: HASH_BY_ID_casur[id] || { ko: ["포근무드", "데일리향"], en: ["CozyVibes", "EverydayScent"] },
         topNote: "", middleNote: "", baseNote: "",
         image,
         // colors는 기존처럼 있으면 쓰고, 없으면 기본값
@@ -674,21 +729,6 @@ export default function PerfumeResult() {
                 <div className="sub-title">{item.subTitle}</div>
                 <div className="title">{dict.title}</div>
 
-                {/* 공유 버튼
-                <img
-                  className="img"
-                  src="https://c.animaapp.com/AUxvzaXH/img/share.svg"
-                  alt="공유하기"
-                  onClick={() => {
-                    if (navigator.share) {
-                      shareNative();    // 모바일/지원 브라우저: 곧바로 네이티브 공유 시트
-                    } else {
-                      openShare();      // PC 등: 바텀시트 열기
-                    }
-                  }}
-                />
-                <button className="download-btn" onClick={downloadCurrentImage}>⬇︎ 저장</button> */}
-
                 {/* 공유 아이콘 (기존) */}
                 <button className="icon-chip" aria-label="공유하기" onClick={shareStoryViaWebShare}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -733,6 +773,7 @@ export default function PerfumeResult() {
                 </button>
 
                 <img className={`image pop-in ${showImage ? "in" : ""}`} src={item.image} alt={item.subTitle} />
+                
                 <p className="hash">#{item.hash[lang][0]}</p>
                 <p className="p">#{item.hash[lang][1]}</p>
               </div>
