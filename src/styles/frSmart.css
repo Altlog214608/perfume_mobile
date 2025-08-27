@@ -519,3 +519,6 @@ body {
   color: #0f1c2f;
   border: 1px solid rgba(255,255,255,.28);
 }
+
+.fancy-title{ margin-top: 2px; margin-bottom: 2px; }
+.tagline{ margin-top: 4px; opacity: .95; }
