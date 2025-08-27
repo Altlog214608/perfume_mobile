@@ -198,7 +198,12 @@ const DICT = {
 const AGE_GROUP_FROM_ID = { 0: "NONE", 1: "10s", 2: "20s", 3: "30s", 4: "40s", 5: "50s", 6: "50s" };
 const GENDER_TEXT_EN = { 0: "None", 1: "Man", 2: "Woman" };
 const GENDER_TEXT_KO = { 0: "None", 1: "남자", 2: "여자" };
-const PERSONALITY_MBTI = { 0: "NONE", 1: "ENFP", 2: "INFP", 3: "ISFP", 4: "ISTJ", 5: "ISFJ" };
+const PERSONALITY_MBTI = {
+  0: "NONE",
+  1: "ENFP", 2: "INFP", 3: "ISFP", 4: "ISTJ", 5: "ISFJ",
+  6: "INTJ", 7: "ENTP", 8: "ENFJ", 9: "INFJ", 10: "INTP",
+  11: "ISTP", 12: "ESFP", 13: "ESTP", 14: "ESFJ", 15: "ESTJ"
+};
 
 const PURPOSE_TEXT = {
   en: { 0: "None", 1: "Mood Boost", 2: "Good Impression", 3: "Unique Style", 4: "Self Satisfaction", 5: "Date or Social", 6: "Formal Occasion", 7: "Special Event" },
@@ -246,6 +251,83 @@ const PREFER_COLOR_TEXT = {
     9: "오렌지",
     10: "핑크"
   }
+};
+
+// 번호별 노트 매핑 (Top/Middle/Base 텍스트)
+// "-" 는 해당 노트 미사용을 의미 — 그대로 출력됩니다.
+const NOTES_BY_ID = {
+  1: {
+    code: "#WD-001-SND",
+    top: "Fresh hay, Clove buds",
+    middle: "Cedar wood, Patchouli",
+    base: "Sandalwood, Light vanilla",
+  },
+  2: {
+    code: "#CT-002-BRG",
+    top: "Italian Lemon, Sweet Mandarin",
+    middle: "Bergamot, Star anise",
+    base: "White Musk",
+  },
+  3: {
+    code: "#MS-003-MSK",
+    top: "-",
+    middle: "-",
+    base: "Animal, Musky",
+  },
+  4: {
+    code: "#AQ-004-DRF",
+    top: "Italian Bergamot, Orange Sicilian Lemon",
+    middle: "Black pepper, Sea breeze, Clary sage",
+    base: "Patchouli, Sandalwood, Sensual Musk",
+  },
+  5: {
+    code: "#GR-005-HRN",
+    top: "Orange, Bergamot, Wild Flower",
+    middle: "Pine, Rosemary, Lavender",
+    base: "Sandalwood, Guaiac Wood, Patchouli",
+  },
+  6: {
+    code: "#CS-006-LSM",
+    top: "Aldehydes, Green, Pear",
+    middle: "Rose, Iris, Orange Blossom",
+    base: "White Musk, Ambrette, Patchouli",
+  },
+  7: {
+    code: "#LF-007-NRC",
+    top: "California Lemon, Green Tea",
+    middle: "Narcissus, Water Lily, Pink Peony, Muguet",
+    base: "Iris Petals, Baby Musk",
+  },
+  8: {
+    code: "#FL-008-TLP",
+    top: "Cyclamen, Freesia, Rhubarb",
+    middle: "Tulip",
+    base: "Blonde Woods, Vetiver",
+  },
+  9: {
+    code: "#FR-009-BRV",
+    top: "Black Berries, Black Currant, Orange",
+    middle: "Orris, Osmanthus Flower, Jasmine",
+    base: "Sandalwood, Vanilla Orchid, Musk",
+  },
+  10: {
+    code: "#AR-010-HRB",
+    top: "Herbal, Aromatic, Fresh",
+    middle: "-",
+    base: "-",
+  },
+  11: {
+    code: "#SO-011-SKT",
+    top: "Blackberry, Rum, Saffron",
+    middle: "Clary sage, Leather accord",
+    base: "Patchouli, Powdery musk",
+  },
+  12: {
+    code: "#FJ-012-AVT",
+    top: "Bergamot, Black currant leaves",
+    middle: "Pink berries, Jasmine, Birch",
+    base: "Musk, Oakmoss, Vanilla",
+  },
 };
 
 
@@ -342,19 +424,25 @@ export default function PerfumeResult() {
     const N = 12; // 카드 개수
     return Array.from({ length: N }, (_, i) => {
       const id = i + 1;
-      // SCENT_CARD_BY_ID는 (id→{title, family}) 매핑이라고 가정
       const card = SCENT_CARD_BY_ID[id] || {};
-      const family = card.family || "";                 // 예: "Fougère" / "플로럴"
-      const familySlug = toFamilySlug(family);          // → "fougere" / "floral"
+      const family = card.family || "";
+      const familySlug = toFamilySlug(family);
       const image = IMAGE_BY_FAMILY[familySlug] || img1;
+
+      // ★ 추가: 번호별 노트 텍스트 주입
+      const notes = NOTES_BY_ID[id] || {};
+      const topNoteText = notes.top ?? "-";
+      const middleNoteText = notes.middle ?? "-";
+      const baseNoteText = notes.base ?? "-";
 
       return {
         subTitle: card.title || `Scent ${id}`,
-        // hash: HASH_BY_ID[id] || { ko: ["은은함", "산뜻함"], en: ["Soft", "Fresh"] },   // 필요하면 해시 사용
         hash: HASH_BY_ID_casur[id] || { ko: ["포근무드", "데일리향"], en: ["CozyVibes", "EverydayScent"] },
-        topNote: "", middleNote: "", baseNote: "",
+        // 기존: 빈 문자열이었음 → 실제 텍스트 주입
+        topNote: topNoteText,
+        middleNote: middleNoteText,
+        baseNote: baseNoteText,
         image,
-        // colors는 기존처럼 있으면 쓰고, 없으면 기본값
         colors: COLORS_BY_ID?.[id] || { overlapGroup: "#333", overlap: "#bbb" },
       };
     });
@@ -445,6 +533,12 @@ export default function PerfumeResult() {
     { type: "text", key: "preferColor", valueFrom: () => vPreferColor },
     { type: "text", key: "purpose", valueFrom: () => vPurpose },
     { type: "text", key: "category", valueFrom: () => vCategory },
+    
+    // ★ 추가: 노트 "텍스트" 행(바 위에 텍스트 먼저 노출)
+    { type: "text", key: "top", valueFrom: () => item.topNote || "-" },
+    { type: "text", key: "middle", valueFrom: () => item.middleNote || "-" },
+    { type: "text", key: "base", valueFrom: () => item.baseNote || "-" },
+
     { type: "note", key: "top", valueFrom: () => Number(params.top) || 0 },
     { type: "note", key: "middle", valueFrom: () => Number(params.middle) || 0 },
     { type: "note", key: "base", valueFrom: () => Number(params.base) || 0 },
