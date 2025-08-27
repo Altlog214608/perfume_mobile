@@ -449,3 +449,73 @@ body {
   /* (기존 유지) */
 }
 
+/* 메인 타이틀 그라데이션 + 은은한 글로우 */
+.fancy-title{
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  background: linear-gradient(90deg,#ff7ea3, #ffd56a, #8ad7ff);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;  /* 일부 브라우저에서 밴드 차단 */
+  display: inline-block;                 /* 텍스트 영역만 칠하게 */
+  width: fit-content;
+  background-clip: text;
+  color: transparent;
+  animation: titleShift 6s ease-in-out infinite;
+  text-shadow: 0 0 12px rgba(255,255,255,.25);
+}
+@keyframes titleShift{
+  0%{ background-position: 0% 50%; }
+  50%{ background-position: 100% 50%; }
+  100%{ background-position: 0% 50%; }
+}
+
+/* 코드 칩 */
+.code-chip{
+  display: inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top: 8px;
+  padding: 6px 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-weight: 700;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.35);
+  color: #0f1c2f;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+  cursor: pointer;
+  transform: translateZ(0);
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.code-chip:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0,0,0,.16);
+}
+.code-chip .sparkle{
+  animation: sparklePulse 1.8s ease-in-out infinite;
+  opacity: .9;
+}
+@keyframes sparklePulse{
+  0%{ transform: scale(1); opacity:.7;}
+  50%{ transform: scale(1.2); opacity:1;}
+  100%{ transform: scale(1); opacity:.7;}
+}
+
+/* 마이크로 노트 */
+.micro-note{
+  opacity: .85;
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+/* 디테일 카드에 미세한 그라데이션 보더(선택) */
+.details-card{
+  position: relative;
+}
+
+.detail-label{
+  background: rgba(255,255,255,.86);  /* 기존 0.96 → 0.86 */
+  color: #0f1c2f;
+  border: 1px solid rgba(255,255,255,.28);
+}

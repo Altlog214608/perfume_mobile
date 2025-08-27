@@ -408,6 +408,7 @@ const COLORS_BY_ID = {
 
 
 
+
 const getLangFromURL = () => {
   try {
     const u = new URL(window.location.href);
@@ -437,6 +438,7 @@ export default function PerfumeResult() {
 
       return {
         subTitle: card.title || `Scent ${id}`,
+        code: notes.code || "",               // ★ 코드 주입
         hash: HASH_BY_ID_casur[id] || { ko: ["포근무드", "데일리향"], en: ["CozyVibes", "EverydayScent"] },
         // 기존: 빈 문자열이었음 → 실제 텍스트 주입
         topNote: topNoteText,
@@ -532,8 +534,8 @@ export default function PerfumeResult() {
     { type: "text", key: "fashion", valueFrom: () => vFashion },
     { type: "text", key: "preferColor", valueFrom: () => vPreferColor },
     { type: "text", key: "purpose", valueFrom: () => vPurpose },
-    { type: "text", key: "category", valueFrom: () => vCategory },
-    
+    // { type: "text", key: "category", valueFrom: () => vCategory },
+
     // ★ 추가: 노트 "텍스트" 행(바 위에 텍스트 먼저 노출)
     { type: "text", key: "top", valueFrom: () => item.topNote || "-" },
     { type: "text", key: "middle", valueFrom: () => item.middleNote || "-" },
@@ -546,6 +548,17 @@ export default function PerfumeResult() {
 
   // 랜덤 정수 [min, max]
   const rint = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+
+  const copyBlendCode = async () => {
+    if (!item?.code) return;
+    try {
+      await navigator.clipboard.writeText(item.code);
+      alert(lang === 'ko' ? '향수 코드를 복사했어요.' : 'Blend code copied.');
+    } catch (e) {
+      console.warn(e);
+    }
+  };
 
   // 합이 100이 되는 탑/미들/베이스 (각각 최소 10 보장)
   const randomNotes100 = () => {
@@ -784,7 +797,29 @@ export default function PerfumeResult() {
             {/* 타이틀/이미지 */}
             <div className={`div appear ${showTitle ? "in" : ""}`}>
               <div className="overlap-2">
+                {/* 기존 sub-title → 제품명 유지 */}
                 <div className="sub-title">{item.subTitle}</div>
+                {/* ✨ 메인 타이틀: 나만의 블렌드 */}
+                <div className="title fancy-title">
+                  {lang === 'ko' ? '나만의 블렌드' : 'Your Signature Blend'}
+                </div>
+                {/* 🔖 코드 칩 (클릭 → 복사) */}
+                {item.code && (
+                  <button className="code-chip" onClick={copyBlendCode} title={lang === 'ko' ? '코드 복사' : 'Copy code'}>
+                    {item.code}
+                    <span className="sparkle">✦</span>
+                  </button>
+                )}
+
+                {/* 🪄 서브/태그라인: 선택 기반 + 곧 직접 조절 */}
+                <div className="tagline">
+                  {lang === 'ko'
+                    ? `당신의 선택으로 빚은 블렌드 코드 ${item.code || '-'}`
+                    : `Blend code ${item.code || '-'} crafted from your choices`}
+                </div>
+
+
+
                 <div className="title">{dict.title}</div>
                 {/* 공유 아이콘 (기존) */}
                 <button className="icon-chip" aria-label="공유하기" onClick={shareStoryViaWebShare}>
