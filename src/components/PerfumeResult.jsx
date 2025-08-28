@@ -368,45 +368,58 @@ const SCENT_SLUG_BY_ID = {
   12: "aventus-fougere", // 슬러그는 ASCII로
 };
 
+// const COLORS_BY_ID = {
+//   // 1 Sandalwood — 따뜻한 우디/앰버
+//   1: { overlapGroup: "#5a3b15", overlap: "#e0a458" },
+
+//   // 2 Bergamot Citrus — 선명한 오렌지/시트러스
+//   2: { overlapGroup: "#b45309", overlap: "#f59e0b" },
+
+//   // 3 Musk Base — 소프트 그레이(비누/스킨센트)
+//   3: { overlapGroup: "#9ca3af", overlap: "#e5e7eb" },
+
+//   // 4 Wind, Waves, Driftwood Surf! — 딥 블루/아쿠아
+//   4: { overlapGroup: "#075985", overlap: "#22d3ee" },
+
+//   // 5 Halla Mountain — 포레스트 그린 + 안개 낀 연그린
+//   5: { overlapGroup: "#166534", overlap: "#a7f3d0" },
+
+//   // 6 Lazy Sunday Morning — 라이트 스톤/린넨
+//   6: { overlapGroup: "#a8a29e", overlap: "#f5f5f4" },
+
+//   // 7 Narcissus — 라이트 플로럴(소프트 엠버)
+//   7: { overlapGroup: "#a16207", overlap: "#fde68a" },
+
+//   // 8 La Tulipe — 뮤트 로즈 + 핑크
+//   8: { overlapGroup: "#9d174d", overlap: "#f9a8d4" },
+
+//   // 9 Black Raspberry & Vanilla — 다크 베리 + 바이올렛 악센트
+//   9: { overlapGroup: "#1f2937", overlap: "#a855f7" },
+
+//   // 10 Herb Base — 허브 그린
+//   10: { overlapGroup: "#065f46", overlap: "#34d399" },
+
+//   // 11 Accord Oud — 스모키 다크 + 앰버(잿불)  ← 직전에 맞춘 값 유지
+//   11: { overlapGroup: "#1c1917", overlap: "#d97706" },
+
+//   // 12 Aventus — 차콜 그레이 + 소프트 실버  ← 직전에 맞춘 값 유지
+//   12: { overlapGroup: "#374151", overlap: "#d1d5db" },
+// };
+
 const COLORS_BY_ID = {
-  // 1 Sandalwood — 따뜻한 우디/앰버
-  1: { overlapGroup: "#5a3b15", overlap: "#e0a458" },
-
-  // 2 Bergamot Citrus — 선명한 오렌지/시트러스
-  2: { overlapGroup: "#b45309", overlap: "#f59e0b" },
-
-  // 3 Musk Base — 소프트 그레이(비누/스킨센트)
-  3: { overlapGroup: "#9ca3af", overlap: "#e5e7eb" },
-
-  // 4 Wind, Waves, Driftwood Surf! — 딥 블루/아쿠아
-  4: { overlapGroup: "#075985", overlap: "#22d3ee" },
-
-  // 5 Halla Mountain — 포레스트 그린 + 안개 낀 연그린
-  5: { overlapGroup: "#166534", overlap: "#a7f3d0" },
-
-  // 6 Lazy Sunday Morning — 라이트 스톤/린넨
-  6: { overlapGroup: "#a8a29e", overlap: "#f5f5f4" },
-
-  // 7 Narcissus — 라이트 플로럴(소프트 엠버)
-  7: { overlapGroup: "#a16207", overlap: "#fde68a" },
-
-  // 8 La Tulipe — 뮤트 로즈 + 핑크
-  8: { overlapGroup: "#9d174d", overlap: "#f9a8d4" },
-
-  // 9 Black Raspberry & Vanilla — 다크 베리 + 바이올렛 악센트
-  9: { overlapGroup: "#1f2937", overlap: "#a855f7" },
-
-  // 10 Herb Base — 허브 그린
-  10: { overlapGroup: "#065f46", overlap: "#34d399" },
-
-  // 11 Accord Oud — 스모키 다크 + 앰버(잿불)  ← 직전에 맞춘 값 유지
-  11: { overlapGroup: "#1c1917", overlap: "#d97706" },
-
-  // 12 Aventus — 차콜 그레이 + 소프트 실버  ← 직전에 맞춘 값 유지
-  12: { overlapGroup: "#374151", overlap: "#d1d5db" },
+  1:  { overlapGroup: "#4a2c1a", overlap: "#d2a679" },  // Sandalwood
+  2:  { overlapGroup: "#d4a017", overlap: "#f9e07f" },  // Bergamot Citrus
+  3:  { overlapGroup: "#c8ad7f", overlap: "#f5e1b9" },  // Musk Base
+  4:  { overlapGroup: "#004e92", overlap: "#00c6ff" },  // Wind Wave Driftwood Surfing
+  5:  { overlapGroup: "#064420", overlap: "#3cb371" },  // Hallasan
+  6:  { overlapGroup: "#dcd3c9", overlap: "#f7f2ea" },  // Lazy Sunday Morning
+  7:  { overlapGroup: "#d4af37", overlap: "#fff176" },  // Daffodil (Light Floral)
+  8:  { overlapGroup: "#c2185b", overlap: "#f48fb1" },  // La Tulipe
+  9:  { overlapGroup: "#4a148c", overlap: "#ba68c8" },  // Black Raspberry & Vanilla
+  10: { overlapGroup: "#2e7d32", overlap: "#81c784" },  // Herbal Aromatic
+  11: { overlapGroup: "#6e0b14", overlap: "#d4af37" },  // Accord Oud
+  12: { overlapGroup: "#0d0d0d", overlap: "#b0b0b0" },  // Aventus Fougère
 };
-
-
 
 
 const getLangFromURL = () => {
