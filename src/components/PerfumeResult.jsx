@@ -407,15 +407,15 @@ const SCENT_SLUG_BY_ID = {
 // };
 
 const COLORS_BY_ID = {
-  1:  { overlapGroup: "#4a2c1a", overlap: "#d2a679" },  // Sandalwood
-  2:  { overlapGroup: "#d4a017", overlap: "#f9e07f" },  // Bergamot Citrus
-  3:  { overlapGroup: "#c8ad7f", overlap: "#f5e1b9" },  // Musk Base
-  4:  { overlapGroup: "#004e92", overlap: "#00c6ff" },  // Wind Wave Driftwood Surfing
-  5:  { overlapGroup: "#064420", overlap: "#3cb371" },  // Hallasan
-  6:  { overlapGroup: "#dcd3c9", overlap: "#f7f2ea" },  // Lazy Sunday Morning
-  7:  { overlapGroup: "#d4af37", overlap: "#fff176" },  // Daffodil (Light Floral)
-  8:  { overlapGroup: "#c2185b", overlap: "#f48fb1" },  // La Tulipe
-  9:  { overlapGroup: "#4a148c", overlap: "#ba68c8" },  // Black Raspberry & Vanilla
+  1: { overlapGroup: "#4a2c1a", overlap: "#d2a679" },  // Sandalwood
+  2: { overlapGroup: "#d4a017", overlap: "#f9e07f" },  // Bergamot Citrus
+  3: { overlapGroup: "#c8ad7f", overlap: "#f5e1b9" },  // Musk Base
+  4: { overlapGroup: "#004e92", overlap: "#00c6ff" },  // Wind Wave Driftwood Surfing
+  5: { overlapGroup: "#064420", overlap: "#3cb371" },  // Hallasan
+  6: { overlapGroup: "#dcd3c9", overlap: "#f7f2ea" },  // Lazy Sunday Morning
+  7: { overlapGroup: "#d4af37", overlap: "#fff176" },  // Daffodil (Light Floral)
+  8: { overlapGroup: "#c2185b", overlap: "#f48fb1" },  // La Tulipe
+  9: { overlapGroup: "#4a148c", overlap: "#ba68c8" },  // Black Raspberry & Vanilla
   10: { overlapGroup: "#2e7d32", overlap: "#81c784" },  // Herbal Aromatic
   11: { overlapGroup: "#6e0b14", overlap: "#d4af37" },  // Accord Oud
   12: { overlapGroup: "#0d0d0d", overlap: "#b0b0b0" },  // Aventus Fougère
@@ -500,6 +500,10 @@ export default function PerfumeResult() {
         backgroundColor: null,
         scale: window.devicePixelRatio > 1 ? 2 : 2,
         useCORS: true,
+        // ⬇️ icon-chip이나 data-html2canvas-ignore 붙은 요소 무시
+        ignoreElements: (el) =>
+          el?.dataset?.html2canvasIgnore === "true" ||
+          el?.classList?.contains("icon-chip"),
       });
       const dataUrl = canvas.toDataURL("image/png");
       const a = document.createElement("a");
@@ -742,6 +746,10 @@ export default function PerfumeResult() {
       scale: Math.max(2, window.devicePixelRatio || 1),
       useCORS: true,                   // 외부 이미지가 있으면 필요
       scrollY: -window.scrollY,        // 화면 스크롤 보정(선택)
+      // ⬇️ icon-chip이나 data-html2canvas-ignore 붙은 요소 무시
+      ignoreElements: (el) =>
+        el?.dataset?.html2canvasIgnore === "true" ||
+        el?.classList?.contains("icon-chip"),
     });
     // 스토리용은 jpg 권장(용량↓)
     return canvas.toDataURL("image/jpeg", 0.92);
@@ -819,7 +827,7 @@ export default function PerfumeResult() {
                 <div className="sub-title center-text">{item.subTitle}</div>
 
                 {/* 공유 아이콘 (기존) */}
-                <button className="icon-chip" aria-label="공유하기" onClick={shareStoryViaWebShare}>
+                <button className="icon-chip" data-html2canvas-ignore="true" aria-label="공유하기" onClick={shareStoryViaWebShare}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     {/* share (Share-2 스타일) */}
@@ -831,7 +839,7 @@ export default function PerfumeResult() {
                 </button>
 
                 {/* 다운로드 아이콘 (트레이 + 아래화살표) */}
-                <button className="icon-chip" aria-label="이미지 저장" onClick={downloadCurrentImage}>
+                <button className="icon-chip" data-html2canvas-ignore="true" aria-label="이미지 저장" onClick={downloadCurrentImage}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     {/* Download */}
@@ -842,7 +850,7 @@ export default function PerfumeResult() {
                 </button>
 
                 {/* 예시 값 버튼 (임시) */}
-                <button className="icon-chip" aria-label="예시 값 입력" onClick={handleSampleClick}>
+                <button className="icon-chip" data-html2canvas-ignore="true" aria-label="예시 값 입력" onClick={handleSampleClick}>
                   <span role="img" aria-label="sparkles">✨</span>
                 </button>
 
@@ -850,6 +858,7 @@ export default function PerfumeResult() {
                 <button
                   className="icon-chip"
                   aria-label="Toggle language"
+                  data-html2canvas-ignore="true"
                   onClick={() => {
                     const next = lang === 'en' ? 'ko' : 'en';
                     setLang(next);
