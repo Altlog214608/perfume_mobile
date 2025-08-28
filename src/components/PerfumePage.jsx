@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import "../styles/frSmart.css";
+import "../styles/PerfumeResult.css";
 
 // 이미지 import
 import lemonula from "../assets/img/lemonula.png";

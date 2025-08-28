@@ -515,7 +515,7 @@ body {
 }
 
 .detail-label{
-  background: rgba(255,255,255,.86);  /* 기존 0.96 → 0.86 */
+  background: rgba(255,255,255,.96);  /* 기존 0.96 → 0.86 */
   color: #0f1c2f;
   border: 1px solid rgba(255,255,255,.28);
 }

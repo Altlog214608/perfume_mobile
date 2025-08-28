@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import "../styles/frSmart.css";
+import "../styles/PerfumeResult.css";
 import { parseQuery, buildSampleUrl } from "../lib/query";
 
 // import lemonula from "../assets/img/lemonula.png";
