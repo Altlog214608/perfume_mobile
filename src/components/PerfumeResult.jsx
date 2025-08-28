@@ -797,30 +797,14 @@ export default function PerfumeResult() {
             {/* 타이틀/이미지 */}
             <div className={`div appear ${showTitle ? "in" : ""}`}>
               <div className="overlap-2">
-                {/* 기존 sub-title → 제품명 유지 */}
-                <div className="sub-title">{item.subTitle}</div>
                 {/* ✨ 메인 타이틀: 나만의 블렌드 */}
-                <div className="title fancy-title">
-                  {lang === 'ko' ? '나만의 블렌드' : 'Your Signature Blend'}
-                </div>
-                {/* 🔖 코드 칩 (클릭 → 복사) */}
-                {item.code && (
-                  <button className="code-chip" onClick={copyBlendCode} title={lang === 'ko' ? '코드 복사' : 'Copy code'}>
-                    {item.code}
-                    <span className="sparkle">✦</span>
-                  </button>
-                )}
-
-                {/* 🪄 서브/태그라인: 선택 기반 + 곧 직접 조절 */}
-                <div className="tagline">
-                  {lang === 'ko'
-                    ? `당신의 선택으로 빚은 블렌드 코드 ${item.code || '-'}`
-                    : `Blend code ${item.code || '-'} crafted from your choices`}
+                <div className="title fancy-title center-text">
+                  {lang === 'ko' ? '나만의 블렌드' : 'Your Signature Scent is'}
                 </div>
 
+                {/* 기존 sub-title → 제품명 유지 */}
+                <div className="sub-title center-text">{item.subTitle}</div>
 
-
-                <div className="title">{dict.title}</div>
                 {/* 공유 아이콘 (기존) */}
                 <button className="icon-chip" aria-label="공유하기" onClick={shareStoryViaWebShare}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -865,6 +849,29 @@ export default function PerfumeResult() {
                 </button>
 
                 <img className={`image pop-in ${showImage ? "in" : ""}`} src={item.image} alt={item.subTitle} />
+
+                {/* 🔖 코드 칩 (클릭 → 복사) */}
+                {item.code && (
+                  <button className="code-chip center-text" onClick={copyBlendCode} title={lang === 'ko' ? '코드 복사' : 'Copy code'}>
+                    Scent Code : {item.code}
+                    <span className="sparkle">✦</span>
+                  </button>
+                )}
+
+                {/* 🪄 서브/태그라인: 선택 기반 + 곧 직접 조절 */}
+                <div className="tagline center-text" style={{ fontSize: 20, fontWeight: 500, color: "#050505cc" }}>
+                  Share Your Scent
+                  {/* {lang === 'ko'
+                    ? `당신의 선택으로 빚은 블렌드 코드 ${item.code || '-'}`
+                    : `Blend code ${item.code || '-'} crafted from your choices`} */}
+                </div>
+
+                {/* 🪄 Best Match for you*/}
+                <div className="title center-text" style={{ fontSize: 28, marginTop: -6, fontWeight: 600, color: "#050505ff" }}>
+                  <b>GO Viral</b>
+                  {/* {dict.title} */}
+                </div>
+
                 <div className="image-dim" style={{ "--dim": 0.30 }} />  {/* 투명도 0~1 */}
 
                 <p className="hash">#{item.hash[lang][0]}</p>
