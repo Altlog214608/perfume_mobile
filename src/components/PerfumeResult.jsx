@@ -856,10 +856,10 @@ export default function PerfumeResult() {
                   </svg>
                 </button>
 
-                {/* 예시 값 버튼 (임시) */}
+                {/* 예시 값 버튼 (임시)
                 <button className="icon-chip" data-html2canvas-ignore="true" aria-label="예시 값 입력" onClick={handleSampleClick}>
                   <span role="img" aria-label="sparkles">✨</span>
-                </button>
+                </button> */}
 
                 {/* 언어 토글 (EN/KR) */}
                 <button
