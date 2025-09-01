@@ -935,11 +935,11 @@ export default function PerfumeResult() {
                 {/* 🪄 Best Match for you*/}
                 {/* // JSX: 기존 "GO Viral" 자리에 버튼 추가(문구는 i18n dict로) */}
                 <div className="title center-text" style={{ fontSize: 28, marginTop: -6, fontWeight: 600 }}>
-                  <button className="text-btn" onClick={handleShareInstagram}>
+                  <button className="text-btn" data-html2canvas-ignore="true" onClick={shareStoryViaWebShare}>
                     {dict.cta.goViral}
                   </button>
                 </div>
-{/* 
+                {/* 
                 <div className="tagline center-text" style={{ fontSize: 20, fontWeight: 500 }}>
                   <button className="ghost-btn" onClick={handleShareInstagram}>
                     {dict.cta.shareScent}
