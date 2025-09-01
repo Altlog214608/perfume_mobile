@@ -79,6 +79,14 @@ const toFamilySlug = (val) => {
   return alias[key] ?? key.replace(/\s+/g, "-");
 };
 
+// PerfumeResult.jsx 상단(컴포넌트 안/밖 아무 곳)
+const getInitialLang = () => {
+  const urlLang = new URL(window.location.href).searchParams.get("lang");
+  const saved = localStorage.getItem("lang");
+  const nav = (navigator.language || "").toLowerCase();
+  return urlLang || saved || (nav.startsWith("ko") ? "ko" : "en");
+};
+
 // 언어별 패밀리 표시(슬러그 → 라벨)
 const FAMILY_DISPLAY = {
   en: {
@@ -199,6 +207,34 @@ const DICT = {
       age: { "10s": "10대", "20s": "20대", "30s": "30대", "40s": "40대", "50s": "50대", "60s": "60대" },
       // color: { red: "빨간색", orange: "주황색", yellow: "노란색", green: "초록색", blue: "파란색", navy: "남색", purple: "보라색" },
       // style: { fresh: "시원함", sweet: "달콤함", romantic: "로맨틱", sensual: "관능적", urban: "도시적", cool: "시원함" },
+    }
+  },
+  de: {
+    labels: {
+      scent: "Duftfamilie",
+      gender: "Geschlecht",
+      mbti: "MBTI",
+      age: "Alter",
+      fashion: "Stil",
+      preferColor: "Lieblingsfarbe",
+      purpose: "Anlass",
+      category: "Kategorie",
+      top: "Kopfnote",
+      middle: "Herznote",
+      base: "Basisnote"
+    },
+    title: "Dein perfektes Duft-Match",
+    shareHashtags: (name) => `#parfum #${name}`,
+    cta: {
+      shareScent: "Teile deinen Duft",
+      // 인스타 중심 카피: "Als Story teilen", 일반 공유: "Jetzt teilen"
+      goViral: "Als Story teilen",
+    },
+    valueMaps: {
+      gender: { female: "Weiblich", male: "Männlich", unspecified: "Nicht angegeben" },
+      age: { "10s": "10er", "20s": "20er", "30s": "30er", "40s": "40er", "50s": "50er", "60s": "60er" },
+      // color: { red: "Rot", orange: "Orange", yellow: "Gelb", green: "Grün", blue: "Blau", navy: "Marineblau", purple: "Violett" },
+      // style: { fresh: "Frisch", sweet: "Süß", romantic: "Romantisch", sensual: "Sinnlich", urban: "Urban", cool: "Cool" },
     }
   }
 };
@@ -376,44 +412,6 @@ const SCENT_SLUG_BY_ID = {
   11: "accord-oud-spicy",
   12: "aventus-fougere", // 슬러그는 ASCII로
 };
-
-// const COLORS_BY_ID = {
-//   // 1 Sandalwood — 따뜻한 우디/앰버
-//   1: { overlapGroup: "#5a3b15", overlap: "#e0a458" },
-
-//   // 2 Bergamot Citrus — 선명한 오렌지/시트러스
-//   2: { overlapGroup: "#b45309", overlap: "#f59e0b" },
-
-//   // 3 Musk Base — 소프트 그레이(비누/스킨센트)
-//   3: { overlapGroup: "#9ca3af", overlap: "#e5e7eb" },
-
-//   // 4 Wind, Waves, Driftwood Surf! — 딥 블루/아쿠아
-//   4: { overlapGroup: "#075985", overlap: "#22d3ee" },
-
-//   // 5 Halla Mountain — 포레스트 그린 + 안개 낀 연그린
-//   5: { overlapGroup: "#166534", overlap: "#a7f3d0" },
-
-//   // 6 Lazy Sunday Morning — 라이트 스톤/린넨
-//   6: { overlapGroup: "#a8a29e", overlap: "#f5f5f4" },
-
-//   // 7 Narcissus — 라이트 플로럴(소프트 엠버)
-//   7: { overlapGroup: "#a16207", overlap: "#fde68a" },
-
-//   // 8 La Tulipe — 뮤트 로즈 + 핑크
-//   8: { overlapGroup: "#9d174d", overlap: "#f9a8d4" },
-
-//   // 9 Black Raspberry & Vanilla — 다크 베리 + 바이올렛 악센트
-//   9: { overlapGroup: "#1f2937", overlap: "#a855f7" },
-
-//   // 10 Herb Base — 허브 그린
-//   10: { overlapGroup: "#065f46", overlap: "#34d399" },
-
-//   // 11 Accord Oud — 스모키 다크 + 앰버(잿불)  ← 직전에 맞춘 값 유지
-//   11: { overlapGroup: "#1c1917", overlap: "#d97706" },
-
-//   // 12 Aventus — 차콜 그레이 + 소프트 실버  ← 직전에 맞춘 값 유지
-//   12: { overlapGroup: "#374151", overlap: "#d1d5db" },
-// };
 
 const COLORS_BY_ID = {
   1: { overlapGroup: "#4a2c1a", overlap: "#d2a679" },  // Sandalwood
@@ -818,6 +816,7 @@ export default function PerfumeResult() {
   const chipBg = useMemo(() => hexToRgba("#ffffff", 0.96), []);
   const chipText = "#0f1c2f";
 
+  
   return (
     <div className="element result-root">
       <div className="overlap-group-wrapper" ref={cardRef}>
