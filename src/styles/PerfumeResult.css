@@ -533,3 +533,33 @@ body {
   display: flex;
   justify-content: center;
 }
+
+/* global css */
+.text-btn{
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  color: inherit;         /* 부모 색상 그대로 */
+  font: inherit;          /* 폰트 그대로 */
+  line-height: 1.2;
+  display: inline;        /* 글자만큼만 영역 */
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent; /* 모바일 탭 하이라이트 제거 */
+}
+.text-btn:hover{ text-decoration: underline; }      /* 호버 표시(선택) */
+.text-btn:focus-visible{ outline: 2px solid #8883; border-radius: 2px; } /* 키보드 접근성 */
+
+.ghost-btn{
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  display: inline-block;  /* 패딩 적용 위해 inline-block */
+  padding: 4px 8px;       /* 얇은 패딩(원하면 0으로) */
+  cursor: pointer;
+  border-radius: 6px;
+  -webkit-tap-highlight-color: transparent;
+}
+.ghost-btn:hover{ background: rgba(0,0,0,0.04); }    /* 아주 옅은 호버(선택) */
+.ghost-btn:focus-visible{ outline: 2px solid #8883; }

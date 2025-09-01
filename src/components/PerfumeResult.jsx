@@ -161,6 +161,10 @@ const DICT = {
     },
     title: "Best match for you",
     shareHashtags: (name) => `#perfume #${name}`,
+    cta: {
+      shareScent: "Share Your Scent",
+      goViral: "GO Viral",
+    },
     // 값 변환
     valueMaps: {
       gender: { female: "Female", male: "Male", unspecified: "Unspecified" },
@@ -185,6 +189,11 @@ const DICT = {
     },
     title: "당신에게 어울리는",
     shareHashtags: (name) => `#향수추천 #${name}`,
+    cta: {
+      // 기본안 (톤 중립)
+      shareScent: "나의 향을 공유해요",
+      goViral: "지금 바로 공유하기",
+    },
     valueMaps: {
       gender: { female: "여자", male: "남자", unspecified: "미지정" },
       age: { "10s": "10대", "20s": "20대", "30s": "30대", "40s": "40대", "50s": "50대", "60s": "60대" },
@@ -430,7 +439,45 @@ const getLangFromURL = () => {
   } catch { return null; }
 };
 
+// 공유용 이미지 캡처(카드 전체 래퍼에 id="share-card" 부여하세요)
+async function captureShareImage() {
+  const node = document.getElementById("share-card");
+  const canvas = await html2canvas(node, { backgroundColor: null, scale: 2 });
+  return new Promise((resolve) => canvas.toBlob(resolve, "image/png", 0.95));
+}
 
+async function handleShareInstagram() {
+  try {
+    const blob = await captureShareImage();
+    if (!blob) throw new Error("capture failed");
+    const file = new File([blob], "my_scent_story.png", { type: "image/png" });
+
+    // A) 안드로이드 크롬 등: 파일 공유 지원 → 인스타 선택 가능(대개 타겟에 노출)
+    if (navigator.canShare?.({ files: [file] })) {
+      await navigator.share({
+        files: [file],
+        title: "My Scent",
+        text: "#perfume #myscent",
+      });
+      return;
+    }
+
+    // B) 폴백 1: PNG 먼저 저장
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "my_scent_story.png";
+    a.click();
+    URL.revokeObjectURL(url);
+
+    // C) 폴백 2: 인스타 스토리 카메라 열기 시도(기기/브라우저마다 다름)
+    // 앱이 설치돼 있고 브라우저가 허용해야 동작
+    window.location.href = "instagram://story-camera";
+  } catch (e) {
+    console.error(e);
+    alert("공유에 실패했어요. 이미지를 저장한 뒤 Instagram 앱에서 스토리로 업로드해 주세요.");
+  }
+}
 
 export default function PerfumeResult() {
 
@@ -558,9 +605,9 @@ export default function PerfumeResult() {
     { type: "text", key: "middle", valueFrom: () => item.middleNote || "-" },
     { type: "text", key: "base", valueFrom: () => item.baseNote || "-" },
 
-    { type: "note", key: "top", valueFrom: () => Number(params.top) || 0 },
-    { type: "note", key: "middle", valueFrom: () => Number(params.middle) || 0 },
-    { type: "note", key: "base", valueFrom: () => Number(params.base) || 0 },
+    // { type: "note", key: "top", valueFrom: () => Number(params.top) || 0 },
+    // { type: "note", key: "middle", valueFrom: () => Number(params.middle) || 0 },
+    // { type: "note", key: "base", valueFrom: () => Number(params.base) || 0 },
   ];
 
   // 랜덤 정수 [min, max]
@@ -882,17 +929,22 @@ export default function PerfumeResult() {
 
                 {/* 🪄 서브/태그라인: 선택 기반 + 곧 직접 조절 */}
                 <div className="tagline center-text" style={{ fontSize: 20, fontWeight: 500, color: "#050505cc" }}>
-                  Share Your Scent
-                  {/* {lang === 'ko'
-                    ? `당신의 선택으로 빚은 블렌드 코드 ${item.code || '-'}`
-                    : `Blend code ${item.code || '-'} crafted from your choices`} */}
+                  {dict.cta.shareScent}
                 </div>
 
                 {/* 🪄 Best Match for you*/}
-                <div className="title center-text" style={{ fontSize: 28, marginTop: -6, fontWeight: 600, color: "#050505ff" }}>
-                  <b>GO Viral</b>
-                  {/* {dict.title} */}
+                {/* // JSX: 기존 "GO Viral" 자리에 버튼 추가(문구는 i18n dict로) */}
+                <div className="title center-text" style={{ fontSize: 28, marginTop: -6, fontWeight: 600 }}>
+                  <button className="text-btn" onClick={handleShareInstagram}>
+                    {dict.cta.goViral}
+                  </button>
                 </div>
+{/* 
+                <div className="tagline center-text" style={{ fontSize: 20, fontWeight: 500 }}>
+                  <button className="ghost-btn" onClick={handleShareInstagram}>
+                    {dict.cta.shareScent}
+                  </button>
+                </div> */}
 
                 <div className="image-dim" style={{ "--dim": 0.30 }} />  {/* 투명도 0~1 */}
 
