@@ -439,45 +439,6 @@ const getLangFromURL = () => {
   } catch { return null; }
 };
 
-// 공유용 이미지 캡처(카드 전체 래퍼에 id="share-card" 부여하세요)
-async function captureShareImage() {
-  const node = document.getElementById("share-card");
-  const canvas = await html2canvas(node, { backgroundColor: null, scale: 2 });
-  return new Promise((resolve) => canvas.toBlob(resolve, "image/png", 0.95));
-}
-
-async function handleShareInstagram() {
-  try {
-    const blob = await captureShareImage();
-    if (!blob) throw new Error("capture failed");
-    const file = new File([blob], "my_scent_story.png", { type: "image/png" });
-
-    // A) 안드로이드 크롬 등: 파일 공유 지원 → 인스타 선택 가능(대개 타겟에 노출)
-    if (navigator.canShare?.({ files: [file] })) {
-      await navigator.share({
-        files: [file],
-        title: "My Scent",
-        text: "#perfume #myscent",
-      });
-      return;
-    }
-
-    // B) 폴백 1: PNG 먼저 저장
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "my_scent_story.png";
-    a.click();
-    URL.revokeObjectURL(url);
-
-    // C) 폴백 2: 인스타 스토리 카메라 열기 시도(기기/브라우저마다 다름)
-    // 앱이 설치돼 있고 브라우저가 허용해야 동작
-    window.location.href = "instagram://story-camera";
-  } catch (e) {
-    console.error(e);
-    alert("공유에 실패했어요. 이미지를 저장한 뒤 Instagram 앱에서 스토리로 업로드해 주세요.");
-  }
-}
 
 export default function PerfumeResult() {
 
