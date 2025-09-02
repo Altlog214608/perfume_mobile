@@ -777,7 +777,8 @@ export default function PerfumeResult() {
       const shareData = {
         files: [file],
         title: `${item.subTitle} 추천 향수`,
-        text: `${item.subTitle} - ${dict.title}`,
+        // text: `${item.subTitle} - ${dict.title}`,
+        text: `${item.subTitle} - ${dict.title}\n${window.location.href}`,
       };
       if (navigator.canShare && navigator.canShare(shareData)) {
         await navigator.share(shareData);   // ▶︎ 공유 시트 열림 (인스타 선택 가능)
